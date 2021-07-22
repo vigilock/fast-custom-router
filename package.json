@@ -1,0 +1,38 @@
+{
+  "name": "fast-custom-router",
+  "version": "1.0.0",
+  "description": "Fast custom express router.",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "dev": "NODE_OPTIONS=--experimental-vm-modules npx jest --watch --verbose",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vigilock/fast-custom-router.git"
+  },
+  "keywords": [
+    "expressjs",
+    "router",
+    "custom-router"
+  ],
+  "author": "Consignity",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vigilock/fast-custom-router/issues"
+  },
+  "homepage": "https://github.com/vigilock/fast-custom-router#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2"
+  }
+}

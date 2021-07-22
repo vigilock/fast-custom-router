@@ -1,0 +1,19 @@
+name: Jest - Unit tests
+
+on: [push]
+
+jobs:
+  build:
+
+    name: Tests application
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Install modules
+        run: npm install
+
+      - name: Run tests
+        run: npm test
