@@ -48,3 +48,10 @@
 /**
  * @typedef {('GET'|'POST'|'PUT'|'DELETE')} RequestMethod HTTP request method that is allowed
  */
+
+/**
+ * @typedef ParserConfig Parser configuration
+ * @property {String} controller_dir absolute path that contains router controllers
+ * @property {[Number]} http_default_response_code default http response code
+ * @property {[Number]} http_responses_code list of authorized http response codes
+ */

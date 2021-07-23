@@ -1,6 +1,9 @@
 import '../__typesdef__'
 import { ACCEPTED_METHODS } from '../__constants__'
 
+import { join } from 'path'
+
+import ControllerNotFound from '../errors/ControllerNotFound'
 import InvalidArgument from '../errors/InvalidArgument'
 
 import Middleware from './Middleware'
@@ -12,7 +15,8 @@ import RouterElement from './RouterElement'
 export default class RouteMethod extends RouterElement {
   /**
    * Intanciate RouteMethod object.
-   * @param {RequestMethod} method
+   * @param {RequestMethod} method route method
+   * @param {RouteMethod} config route configuration
    */
   constructor(method, config) {
     super(RouteMethod, ['controller', 'response_code', 'pre_middlewares', 'post_middlewares', 'body'], config)
@@ -28,14 +32,21 @@ export default class RouteMethod extends RouterElement {
     }
 
     this.name = String(method)
-    this.controller = config.controller
+    this.controller_name = config.controller
+    this.controller = undefined
     this.body = []
     this.pre_middlewares = []
     this.post_middlewares = []
 
     /**
-     * TODO: controller, response_code
+     * TODO: response_code
      */
+    /**
+     * Load controller from config.controller string
+     */
+    if (!config.controller) {
+      throw new InvalidArgument(`${this.name}.controller=${config.pre_middlewares} is undefined.`)
+    }
 
     /**
      * Valid and create pre-middlewares
@@ -71,6 +82,20 @@ export default class RouteMethod extends RouterElement {
       this.body = Object.key(config.body).map(key => {
         return new RouteParameter(key, config.body[key])
       })
+    }
+  }
+
+  /**
+   * Load controller from name and parser configuration
+   * @param {String} controllerDir controller directory
+   */
+  async loadController(controllerDir) {
+    const controllerPath = join(controllerDir, this.controller_name)
+    try {
+      const module = await import(controllerPath)
+      this.controller = module.default
+    } catch (error) {
+      throw new ControllerNotFound(controllerPath)
     }
   }
 }
