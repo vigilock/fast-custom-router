@@ -1,14 +1,18 @@
 import { describe, expect, test, beforeEach } from '@jest/globals'
 import { YAMLException } from 'js-yaml'
 
+import Parser from '../src/Parser'
+import Root from '../src/models/Root'
+import Route from '../src/models/Route'
+
 import EmptyConfigFile from '../src/errors/EmptyConfigFile'
 import EmptyRoutes from '../src/errors/EmptyRoutes'
 import FileNotFound from '../src/errors/FileNotFound'
 import InvalidArgument from '../src/errors/InvalidArgument'
 import InvalidRouteElement from '../src/errors/InvalidRouteElement'
-import Parser from '../src/Parser'
 
 import FakeRouter from './mock/FakeRouter'
+import EmptyMethods from '../src/errors/EmptyMethods'
 
 const fakeExpressRouter = new FakeRouter()
 const parser = new Parser(fakeExpressRouter)
@@ -82,57 +86,45 @@ describe('check root configuration', () => {
 
   test('with invalid routes argument', () => {
     expect(() => {
-      parser.parseConfig({
-        my_super_root: {
-          root: '/api',
-        },
+      new Root('name', {
+        root: '/api',
       })
     }).toThrow(EmptyRoutes)
     expect(() => {
-      parser.parseConfig({
-        my_super_root: {
-          root: '/api',
-          routes: null,
-        },
+      new Root('name', {
+        root: '/api',
+        routes: null,
       })
     }).toThrow(EmptyRoutes)
     expect(() => {
-      parser.parseConfig({
-        my_super_root: {
-          root: '/api',
-          routes: undefined,
-        },
+      new Root('name', {
+        root: '/api',
+        routes: undefined,
       })
     }).toThrow(EmptyRoutes)
     expect(() => {
-      parser.parseConfig({
-        my_super_root: {
-          root: '/api',
-          routes: 'yes',
-        },
+      new Root('name', {
+        root: '/api',
+        routes: 'yes',
       })
     }).toThrow(InvalidArgument)
     expect(() => {
-      parser.parseConfig({
-        my_super_root: {
-          root: '/api',
-          routes: 5,
-        },
+      new Root('name', {
+        root: '/api',
+        routes: 5,
       })
     }).toThrow(InvalidArgument)
   })
 
   test('with a none Root/Route', () => {
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          routes: {
-            teapot: {
-              methods: {
-                get: {
-                  controller: 'getTeapot',
-                },
+      new Root('name', {
+        root: '/api',
+        routes: {
+          teapot: {
+            methods: {
+              get: {
+                controller: 'getTeapot',
               },
             },
           },
@@ -143,30 +135,28 @@ describe('check root configuration', () => {
 
   test('with valid root and routes arguments', () => {
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          routes: {
-            teapot: {
-              path: '/teapot',
-              methods: {
-                get: {
-                  controller: 'getTeapot',
-                },
+      new Root('name', {
+        root: '/api',
+        routes: {
+          teapot: {
+            path: '/teapot',
+            methods: {
+              get: {
+                controller: 'getTeapot',
               },
             },
-            userRoot: {
-              root: '/user',
-              routes: {
-                getUser: {
-                  path: '/:id',
-                  query: {
-                    id: 'ObjectId',
-                  },
-                  methods: {
-                    get: {
-                      controller: 'getUser',
-                    },
+          },
+          userRoot: {
+            root: '/user',
+            routes: {
+              getUser: {
+                path: '/:id',
+                query: {
+                  id: 'ObjectId',
+                },
+                methods: {
+                  get: {
+                    controller: 'getUser',
                   },
                 },
               },
@@ -177,83 +167,156 @@ describe('check root configuration', () => {
     }).not.toThrow()
   })
 
-  test('with invalid pre_middleware', () => {
+  test('with invalid pre_middlewares', () => {
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-          routes: routesTeapot,
-        },
+      new Root('name', {
+        root: '/api',
+        pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
+        routes: routesTeapot,
       })
     }).toThrow(InvalidArgument)
   })
 
-  test('with valid pre_middleware', () => {
+  test('with valid pre_middlewares', () => {
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          pre_middlewares: null,
-          routes: routesTeapot,
-        },
+      new Root('name', {
+        root: '/api',
+        pre_middlewares: null,
+        routes: routesTeapot,
       })
     }).not.toThrow()
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          pre_middlewares: undefined,
-          routes: routesTeapot,
-        },
+      new Root('name', {
+        root: '/api',
+        pre_middlewares: undefined,
+        routes: routesTeapot,
       })
     }).not.toThrow()
   })
 
-  test('with invalid post_middleware', () => {
+  test('with invalid post_middlewares', () => {
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          post_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-          routes: routesTeapot,
-        },
+      new Root('name', {
+        root: '/api',
+        post_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
+        routes: routesTeapot,
       })
     }).toThrow(InvalidArgument)
   })
 
-  test('with valid post_middleware', () => {
+  test('with valid post_middlewares', () => {
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          post_middlewares: null,
-          routes: routesTeapot,
-        },
+      new Root('name', {
+        root: '/api',
+        post_middlewares: null,
+        routes: routesTeapot,
       })
     }).not.toThrow()
     expect(() => {
-      parser.parseConfig({
-        api: {
-          root: '/api',
-          post_middlewares: undefined,
-          routes: routesTeapot,
-        },
+      new Root('name', {
+        root: '/api',
+        post_middlewares: undefined,
+        routes: routesTeapot,
       })
     }).not.toThrow()
   })
 })
 
 describe('check route configuration', () => {
-  test.skip('check invalid path', () => {})
+  test('check invalid path', () => {
+    expect(() => {
+      new Route('name', {
+        path: 'qsdflkjqsdf/§$^:azer',
+      })
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new Route('name', {
+        path: 'ii',
+      })
+    }).toThrow(InvalidArgument)
+  })
 
-  test.skip('check valid path', () => {})
+  test('check valid path', () => {
+    expect(() => {
+      new Route('name', routesTeapot.teapot)
+    }).not.toThrow()
+  })
 
-  test.skip('check invalid controller', () => {})
+  test('check invalid methods', () => {
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        methods: null,
+      })
+    }).toThrow(EmptyMethods)
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        methods: undefined,
+      })
+    }).toThrow(EmptyMethods)
+  })
 
-  test.skip('check valid controller', () => {})
+  test('check valid methods', () => {
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        methods: routesTeapot.teapot.methods,
+      })
+    })
+  })
 
-  test.skip('check ', () => {})
+  test('with invalid pre_middlewares', () => {
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
+        methods: routesTeapot.teapot.methods,
+      })
+    }).toThrow(InvalidArgument)
+  })
 
-  test.skip('check', () => {})
+  test('with valid pre_middlewares', () => {
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        pre_middlewares: null,
+        methods: routesTeapot.teapot.methods,
+      })
+    }).not.toThrow()
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        pre_middlewares: undefined,
+        methods: routesTeapot.teapot.methods,
+      })
+    }).not.toThrow()
+  })
+
+  test('with invalid post_middlewares', () => {
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        post_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
+        methods: routesTeapot.teapot.methods,
+      })
+    }).toThrow(InvalidArgument)
+  })
+
+  test('with valid post_middlewares', () => {
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        post_middlewares: null,
+        methods: routesTeapot.teapot.methods,
+      })
+    }).not.toThrow()
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        post_middlewares: undefined,
+        methods: routesTeapot.teapot.methods,
+      })
+    }).not.toThrow()
+  })
 })
