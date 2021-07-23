@@ -19,14 +19,14 @@ export default class Root extends RouterElement {
     super(Root, ['name', 'root', 'routes', 'pre_middlewares', 'post_middlewares', 'routes'], config)
     // Valid configuration
     if (!config) {
-      throw new InvalidArgument(`Root ${this.name} can not be null or undefined.`)
+      throw new InvalidArgument(`Root ${this.name} config can not be null or undefined.`)
     }
 
     this.name = String(name)
     this.root = String(config.root)
 
-    if (!PATH_REGEX.test(this.root)) {
-      throw new InvalidArgument(`${this.root} is not a valid path (using regex: ${PATH_REGEX}).`)
+    if (!this.root || !PATH_REGEX.test(this.root)) {
+      throw new InvalidArgument(`Root.root="${this.root}" is not a valid path (using regex: ${PATH_REGEX}).`)
     }
 
     /**
