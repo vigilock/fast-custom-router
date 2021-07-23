@@ -13,6 +13,7 @@ import InvalidRouteElement from '../src/errors/InvalidRouteElement'
 
 import FakeRouter from './mock/FakeRouter'
 import EmptyMethods from '../src/errors/EmptyMethods'
+import RouteMethod from '../src/models/RouteMethod'
 
 const fakeExpressRouter = new FakeRouter()
 const parser = new Parser(fakeExpressRouter)
@@ -223,6 +224,18 @@ describe('check root configuration', () => {
 })
 
 describe('check route configuration', () => {
+  test('check invalid configuration', () => {
+    expect(() => {
+      new Route('name', null)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new Route('name', undefined)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new Route('name', NaN)
+    }).toThrow(InvalidArgument)
+  })
+
   test('check invalid path', () => {
     expect(() => {
       new Route('name', {
@@ -319,4 +332,124 @@ describe('check route configuration', () => {
       })
     }).not.toThrow()
   })
+})
+
+describe('check route method configuration', () => {
+  test('check invalid configuration', () => {
+    expect(() => {
+      new RouteMethod('name', null)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new RouteMethod('name', undefined)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new RouteMethod('name', NaN)
+    }).toThrow(InvalidArgument)
+  })
+
+  test('check wrong methods', () => {
+    expect(() => {
+      new RouteMethod(null, routesTeapot.teapot.methods.get)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new RouteMethod(undefined, routesTeapot.teapot.methods.get)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new RouteMethod(NaN, routesTeapot.teapot.methods.get)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new RouteMethod('WRONG_METHOD', routesTeapot.teapot.methods.get)
+    }).toThrow(InvalidArgument)
+  })
+
+  test('check valid method names', () => {
+    expect(() => {
+      new RouteMethod('GET', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('POST', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('PUT', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('DELETE', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('get', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('post', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('put', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('delete', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+  })
+
+  test('with invalid pre_middlewares', () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
+      })
+    }).toThrow(InvalidArgument)
+  })
+
+  test('with valid pre_middlewares', () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        pre_middlewares: null,
+      })
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        pre_middlewares: undefined,
+      })
+    }).not.toThrow()
+  })
+
+  test('with invalid post_middlewares', () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        post_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
+      })
+    }).toThrow(InvalidArgument)
+  })
+
+  test('with valid post_middlewares', () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        post_middlewares: null,
+      })
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        post_middlewares: undefined,
+      })
+    }).not.toThrow()
+  })
+})
+
+describe.skip('check route body configuration', () => {
+  test('check wrong types', () => {
+    expect(() => {
+      new RouteMethod('GET', {})
+    })
+  })
+
+  test('check valid types', () => {
+    expect(() => {
+      new RouteMethod('GET', {})
+    })
+  })
+
+  test('check default value option', () => {})
 })
