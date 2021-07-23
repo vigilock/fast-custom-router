@@ -7,22 +7,35 @@ import InvalidArgument from '../errors/InvalidArgument'
 import RouterElement from './RouterElement'
 import EmptyMethods from '../errors/EmptyMethods'
 
+/**
+ * Route element of the custom router.
+ */
 export default class Route extends RouterElement {
+  /**
+   * Instanciate Route object
+   * @param {String} name name of the route
+   * @param {RouteObject} config route configuration
+   */
   constructor(name, config) {
     super(Route, ['name', 'path', 'query', 'pre_middlewares', 'post_middlewares', 'methods'], config)
 
     // Valid configuration
     if (!config) {
-      throw new InvalidArgument(`Root ${this.name} can not be null or undefined.`)
+      throw new InvalidArgument(`Root ${name} can not be null or undefined.`)
     }
 
     this.name = String(name)
     this.path = config.path
+    this.query = []
+    this.pre_middlewares = []
+    this.post_middlewares = []
 
     // Valid path
     if (!this.path || !PATH_REGEX.test(this.path)) {
       throw new InvalidArgument(`${this.root} is not a valid path (using regex: ${PATH_REGEX}).`)
     }
+
+    // Valid query parameters
 
     /**
      * Valid and create pre-middlewares
@@ -46,7 +59,7 @@ export default class Route extends RouterElement {
       throw new EmptyMethods(this.name)
     }
     this.methods = Object.keys(config.methods).map(key => {
-      return new RouteMethod(config.methods[key])
+      return new RouteMethod(key, config.methods[key])
     })
 
     /**

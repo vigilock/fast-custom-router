@@ -25,6 +25,8 @@
 /**
  * @typedef RouteObject Express route
  * @property {String} path route path with parameters (eg.: '/my-path/:param)
+ * @property {[String]} [pre_middlewares] list of middleware names, called before routes
+ * @property {[String]} [post_middlewares] list of middleware names, called after routes
  * @property {[{String: RouteMethodObject}]} methods defines methods that is
  */
 
@@ -40,5 +42,9 @@
 /**
  * @typedef RouteParameterObject Route parameter
  * @property {String} type type of the value
- * @property {any} defaultValue default value of the parameter, implicit optionnal declaration
+ * @property {any} default_value default value of the parameter, implicit optionnal declaration
+ */
+
+/**
+ * @typedef {('GET'|'POST'|'PUT'|'DELETE')} RequestMethod HTTP request method that is allowed
  */

@@ -9,6 +9,9 @@ import InvalidArgument from '../errors/InvalidArgument'
 import InvalidRouteElement from '../errors/InvalidRouteElement'
 import EmptyRoutes from '../errors/EmptyRoutes'
 
+/**
+ * Root element of the custom router.
+ */
 export default class Root extends RouterElement {
   /**
    * Parse a root object
@@ -19,11 +22,13 @@ export default class Root extends RouterElement {
     super(Root, ['name', 'root', 'routes', 'pre_middlewares', 'post_middlewares', 'routes'], config)
     // Valid configuration
     if (!config) {
-      throw new InvalidArgument(`Root ${this.name} config can not be null or undefined.`)
+      throw new InvalidArgument(`Root ${name} config can not be null or undefined.`)
     }
 
     this.name = String(name)
     this.root = String(config.root)
+    this.pre_middlewares = []
+    this.post_middlewares = []
 
     if (!this.root || !PATH_REGEX.test(this.root)) {
       throw new InvalidArgument(`Root.root="${this.root}" is not a valid path (using regex: ${PATH_REGEX}).`)
