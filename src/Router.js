@@ -1,6 +1,6 @@
 import { validParams } from '../src/Validation'
 
-import './__types__'
+import './__typesdef__'
 
 /**
  * Custom express router

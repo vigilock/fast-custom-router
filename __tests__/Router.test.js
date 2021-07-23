@@ -1,19 +1,9 @@
 import { describe, expect, test, beforeEach } from '@jest/globals'
+import FakeResponse from './mock/FakeResponse'
+import FakeRouter from './mock/FakeRouter'
 import Router from '../src/Router'
 
 describe('check router template route', () => {
-  class FakeResponse {
-    constructor() {
-      this._statusCode = 0
-      this._json = null
-    }
-    status(code) {
-      this._statusCode = code
-    }
-    json(res) {
-      this._json = res
-    }
-  }
   const router = new Router(null)
   const fakeResponse = {
     status: () => {},
@@ -111,37 +101,11 @@ describe('check router template route', () => {
 })
 
 describe('check if Router has right behavior', () => {
-  class MockExpressRouter {
-    constructor() {
-      this.reset()
-    }
-    reset() {
-      this.routes = {
-        get: {},
-        post: {},
-        put: {},
-        delete: {},
-      }
-    }
-    get(path, route) {
-      this.routes.get[path] = route
-    }
-    post(path, route) {
-      this.routes.post[path] = route
-    }
-    put(path, route) {
-      this.routes.put[path] = route
-    }
-    delete(path, route) {
-      this.routes.delete[path] = route
-    }
-  }
-
-  const fakeRouter = new MockExpressRouter()
+  const fakeRouter = new FakeRouter()
   const router = new Router(fakeRouter)
 
   beforeEach(() => {
-    fakeRouter.reset()
+    fakeRouter.init()
   })
 
   test('Add get route', () => {
