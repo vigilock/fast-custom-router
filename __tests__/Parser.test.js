@@ -1,5 +1,7 @@
 import { describe, expect, test, beforeEach } from '@jest/globals'
 import { YAMLException } from 'js-yaml'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
 
 import Parser from '../src/Parser'
 import Root from '../src/models/Root'
@@ -14,9 +16,15 @@ import InvalidRouteElement from '../src/errors/InvalidRouteElement'
 import FakeRouter from './mock/FakeRouter'
 import EmptyMethods from '../src/errors/EmptyMethods'
 import RouteMethod from '../src/models/RouteMethod'
+import ControllerNotFound from '../src/errors/ControllerNotFound'
 
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+const config = {
+  controller_dir: join(__dirname, 'controller'),
+}
 const fakeExpressRouter = new FakeRouter()
-const parser = new Parser(fakeExpressRouter)
+const parser = new Parser(fakeExpressRouter, config)
 
 const routesTeapot = {
   teapot: {
@@ -389,6 +397,31 @@ describe('check route method configuration', () => {
     }).not.toThrow()
   })
 
+  test('check wrong controller', async () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: null,
+      })
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: undefined,
+      })
+    }).toThrow(InvalidArgument)
+    const method = new RouteMethod('post', {
+      controller: 'nonexistingController',
+    })
+    await expect(method.loadController(config.controller_dir)).rejects.toThrow(ControllerNotFound)
+  })
+
+  test('check controller import', async () => {
+    const method = new RouteMethod('post', routesTeapot.teapot.methods.get)
+    expect(async () => {
+      await method.loadController(config.controller_dir)
+      expect(method.controller).toBeDefined()
+    }).not.toThrow()
+  })
+
   test('with invalid pre_middlewares', () => {
     expect(() => {
       new RouteMethod('GET', {
@@ -433,6 +466,30 @@ describe('check route method configuration', () => {
       new RouteMethod('GET', {
         controller: 'getTeapot',
         post_middlewares: undefined,
+      })
+    }).not.toThrow()
+  })
+
+  test.skip('with invalid body', () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        body: ['firstMiddleware', 5, 'secondMiddleware'],
+      })
+    }).toThrow(InvalidArgument)
+  })
+
+  test.skip('with valid body', () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        body: null,
+      })
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        body: undefined,
       })
     }).not.toThrow()
   })
