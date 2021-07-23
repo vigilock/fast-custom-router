@@ -1,4 +1,4 @@
-import './__types__'
+import './__typesdef__'
 
 /**
  * Valid each parameters for the route on call.
