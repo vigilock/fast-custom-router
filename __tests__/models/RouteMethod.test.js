@@ -87,54 +87,6 @@ describe('check route method configuration', () => {
     }).not.toThrow()
   })
 
-  test('with invalid pre_middlewares', () => {
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: 'getTeapot',
-        pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-      })
-    }).toThrow(InvalidArgument)
-  })
-
-  test('with valid pre_middlewares', () => {
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: 'getTeapot',
-        pre_middlewares: null,
-      })
-    }).not.toThrow()
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: 'getTeapot',
-        pre_middlewares: undefined,
-      })
-    }).not.toThrow()
-  })
-
-  test('with invalid post_middlewares', () => {
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: 'getTeapot',
-        post_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-      })
-    }).toThrow(InvalidArgument)
-  })
-
-  test('with valid post_middlewares', () => {
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: 'getTeapot',
-        post_middlewares: null,
-      })
-    }).not.toThrow()
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: 'getTeapot',
-        post_middlewares: undefined,
-      })
-    }).not.toThrow()
-  })
-
   test('with invalid body', () => {
     expect(() => {
       new RouteMethod('GET', {

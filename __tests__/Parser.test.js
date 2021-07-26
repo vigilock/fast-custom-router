@@ -27,7 +27,7 @@ describe('check throwed exceptions on bad files or on creation', () => {
 
   test('on file not found or is directory', () => {
     expect(() => {
-      parser.loadFromFile('./wrongFile.yaml')
+      parser.loadFromFile('wrongFile.yaml')
     }).toThrow(FileNotFound)
     expect(() => {
       parser.loadFromFile('.')
