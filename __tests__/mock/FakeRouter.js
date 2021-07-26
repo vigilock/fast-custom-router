@@ -1,3 +1,4 @@
+/** Mock express router. */
 export default class FakeRouter {
   constructor() {
     this.init()

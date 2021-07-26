@@ -31,9 +31,7 @@ export default class Parser {
   /**
    * Load router configuration from a file
    *
-   * @param {String} filepath Configuration file path
-   * @throws {InvalidArgument} An argument is not valid
-   * @throws {UnknownArgument} An argument is argument
+   * @param {string} filepath Configuration file path
    */
   loadFromFile(filepath) {
     if (!fs.existsSync(filepath) || fs.lstatSync(filepath).isDirectory()) {
@@ -45,9 +43,7 @@ export default class Parser {
   /**
    * Load router configuration from a String
    *
-   * @param {String} yml Router configuration string
-   * @throws {InvalidArgument} An argument is not valid
-   * @throws {UnknownArgument} An argument is argument
+   * @param {string} yml Router configuration string
    */
   loadFromString(yml) {
     if (!yml) {
@@ -61,10 +57,8 @@ export default class Parser {
   /**
    * Parse a configuration object
    *
-   * @param {{ String: RootObject }} config Configuration object
+   * @param {{ string: RootObject }} config Configuration object
    * @returns {[Root]} Parsed configuration
-   * @throws {InvalidArgument} An argument is not valid
-   * @throws {UnknownArgument} An argument is argument
    */
   parseConfig(config) {
     return Object.keys(config).map(name => {

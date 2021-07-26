@@ -1,3 +1,4 @@
+/** Mock response object. */
 export default class FakeResponse {
   constructor() {
     this._statusCode = 0

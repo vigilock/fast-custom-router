@@ -1,3 +1,4 @@
+/** Indicates that a root does not provide routes. */
 export default class EmptyRoutes extends Error {
   constructor(name) {
     super()

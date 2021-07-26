@@ -9,8 +9,9 @@ import { resolve } from 'path'
 export default class FileNotFound extends Error {
   /**
    * Create a FileNotFound error.
-   * @param {String} filepath path to unknown file
-   * @throws {Error} throwed if filepath parameter is not valid (null || undefined)
+   *
+   * @param {string} filepath Path to unknown file
+   * @throws {Error} Throwed if filepath parameter is not valid (null || undefined)
    */
   constructor(filepath) {
     super()

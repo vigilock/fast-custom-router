@@ -6,7 +6,8 @@
 export default class ControllerNotFound extends Error {
   /**
    * Create a ControllerNotFound error.
-   * @param {String} filepath path to unknown module
+   *
+   * @param {string} filepath Path to unknown module
    */
   constructor(filepath) {
     super()

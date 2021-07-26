@@ -1,3 +1,4 @@
+/** Indicates that a route does not provide methods. */
 export default class EmptyMethods extends Error {
   constructor(name) {
     super()
