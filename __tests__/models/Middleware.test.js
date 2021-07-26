@@ -13,8 +13,20 @@ describe('check Middleware configuration', () => {
     expect(() => {
       new Middleware(NaN)
     }).toThrow(InvalidArgument)
+  })
+
+  test('check with others types than string', () => {
     expect(() => {
       new Middleware('')
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new Middleware(5)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new Middleware(true)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new Middleware(false)
     }).toThrow(InvalidArgument)
   })
 
