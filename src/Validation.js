@@ -2,8 +2,10 @@ import './__typesdef__'
 
 /**
  * Valid each parameters for the route on call.
- * @param {[Parameter]} params route parameters
- * @param {Function} next next function from express router
+ *
+ * @param {[Parameter]} params Route parameters
+ * @param {Function} next Next function from express router
+ * @returns {{ validedParams: [any]; paramsAreValid: Boolean }} ValidedParams is filtered data, and paramsAreValid indicates if all parameters are valid
  */
 export function validParams(params, next) {
   let paramsAreValid = true
@@ -43,12 +45,11 @@ export function validParams(params, next) {
   }
 }
 
-/**
- * Enumeration of type validation functions.
- */
+/** Enumeration of type validation functions. */
 export default {
   NUMBER: Number,
   STRING: String,
   BOOLEAN: Boolean,
+  /* eslint no-useless-escape: "off" */
   MAIL: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
 }
