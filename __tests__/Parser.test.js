@@ -36,7 +36,7 @@ describe('check throwed exceptions on bad files or on creation', () => {
 
   test('on invalid yaml syntax', () => {
     expect(() => {
-      parser.loadFromFile('__tests__/config/exceptionsBadYAML.yaml')
+      parser.loadFromFile('exceptionsBadYAML.yaml')
     }).toThrow(YAMLException)
   })
 

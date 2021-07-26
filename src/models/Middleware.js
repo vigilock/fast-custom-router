@@ -32,9 +32,11 @@ export default class Middleware {
   /**
    * Load middleware from name and parser configuration
    *
+   * @param {Express.Router} router Express router
+   * @param {string} path Middleware path
    * @param {string} middlewareDir Controller directory
    */
-  async load(middlewareDir) {
+  async load(router, path, middlewareDir) {
     const middlewarePath = join(middlewareDir, this.name + '.js')
     try {
       const module = await import(middlewarePath)
@@ -42,6 +44,8 @@ export default class Middleware {
     } catch (error) {
       throw new MiddlewareNotFound(middlewarePath)
     }
+
+    router.use(path, this.middleware)
   }
 
   /**

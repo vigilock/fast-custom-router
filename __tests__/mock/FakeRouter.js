@@ -5,6 +5,7 @@ export default class FakeRouter {
   }
   init() {
     this.routes = {
+      use: {},
       get: {},
       post: {},
       put: {},
@@ -12,6 +13,13 @@ export default class FakeRouter {
       delete: {},
     }
     this.orderedCall = []
+  }
+  use(path, middleware) {
+    this.routes.use[path] = middleware
+    this.orderedCall.push({
+      path,
+      middleware,
+    })
   }
   get(path, route) {
     this.routes.get[path] = route

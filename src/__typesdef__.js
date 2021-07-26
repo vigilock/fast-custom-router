@@ -49,7 +49,9 @@
 
 /**
  * @typedef ParserConfig Parser configuration
+ * @property {string} config_dir Absolute path that contains router configuration
  * @property {string} controller_dir Absolute path that contains router controllers
+ * @property {string} middleware_dir Absolute path that contains router middlewares
  * @property {[number]} http_default_response_code Default http response code
  * @property {[number]} http_responses_code List of authorized http response codes
  */
