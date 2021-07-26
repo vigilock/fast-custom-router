@@ -1,4 +1,8 @@
 import { describe, expect, test } from '@jest/globals'
+import { config } from '../__constants__'
+
+import MiddlewareNotFound from '../../src/errors/MiddlewareNotFound'
+
 import InvalidArgument from '../../src/errors/InvalidArgument'
 import Middleware from '../../src/models/Middleware'
 
@@ -36,6 +40,27 @@ describe('check Middleware configuration', () => {
     }).not.toThrow()
     expect(() => {
       new Middleware('name')
+    }).not.toThrow()
+  })
+})
+
+describe('check Middleware import', () => {
+  test('check wrong middleware', async () => {
+    expect(() => {
+      new Middleware(null)
+    }).toThrow(InvalidArgument)
+    expect(() => {
+      new Middleware(undefined)
+    }).toThrow(InvalidArgument)
+    const middleware = new Middleware('nonexistingController')
+    await expect(middleware.load(config.middleware_dir)).rejects.toThrow(MiddlewareNotFound)
+  })
+
+  test('check middleware import', async () => {
+    const middleware = new Middleware('simpleMiddleware')
+    expect(async () => {
+      await expect(middleware.load(config.middleware_dir)).resolves.not.toThrow()
+      expect(middleware.middleware).toBeDefined()
     }).not.toThrow()
   })
 })
