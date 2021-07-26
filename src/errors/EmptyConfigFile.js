@@ -1,1 +1,2 @@
-export default class EmptyConfigFile {}
+/** Error that indicates configuration file is empty. */
+export default class EmptyConfigFile extends Error {}
