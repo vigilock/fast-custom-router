@@ -1,4 +1,7 @@
+import { join } from 'path'
+
 import InvalidArgument from '../errors/InvalidArgument'
+import MiddlewareNotFound from '../errors/MiddlewareNotFound'
 
 /** Middleware element for custom router. */
 export default class Middleware {
@@ -9,6 +12,7 @@ export default class Middleware {
    */
   constructor(name) {
     this.name = undefined
+    this.middleware = undefined
 
     this.__parseName(name)
   }
@@ -23,6 +27,21 @@ export default class Middleware {
       throw new InvalidArgument(`Middleware.name="${name}" must be a String.`)
     }
     this.name = name
+  }
+
+  /**
+   * Load middleware from name and parser configuration
+   *
+   * @param {string} middlewareDir Controller directory
+   */
+  async load(middlewareDir) {
+    const middlewarePath = join(middlewareDir, this.name + '.js')
+    try {
+      const module = await import(middlewarePath)
+      this.middleware = module.default
+    } catch (error) {
+      throw new MiddlewareNotFound(middlewarePath)
+    }
   }
 
   /**
