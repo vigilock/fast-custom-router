@@ -4,7 +4,7 @@ export const routesTeapot = {
     methods: {
       get: {
         controller: 'getTeapot',
-        response_code: 418,
+        response_code: 200,
       },
     },
   },

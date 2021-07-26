@@ -20,23 +20,50 @@ export default class RouteParameter extends RouterElement {
   constructor(name, config) {
     super(RouteParameter, ['type', 'default_value'], config)
 
-    if (!config) {
-      throw new InvalidArgument(`RouteParameter "${name}" configuration can not be null or undefined.`)
-    }
-
     this.name = name
-    this.type = null
-    this.default_value = config.default_value
+    this.type = undefined
+    this.optionnal = false
+    this.default_value = undefined
 
+    this.__parseName(name)
+    this.__parseType(config.type)
+    this.__parseDefaultValue(config.default_value)
+  }
+
+  /**
+   * Parse name.
+   *
+   * @param {string} name Parameter name
+   */
+  __parseName(name) {
     if (!name || typeof name !== 'string') {
       throw new InvalidArgument(`RouterParameter does not provide valid name "${this.name}"`)
     }
+  }
 
-    const type = String(config.type).toUpperCase()
-    if (!config.type || Object.keys(Validation).indexOf(type) === -1) {
+  /**
+   * Parse parameter type.
+   *
+   * @param {string} type Type name
+   */
+  __parseType(type) {
+    const typeString = String(type).toUpperCase()
+    if (!type || Object.keys(Validation).indexOf(typeString) === -1) {
       throw new InvalidArgument(`RouterParameter "${this.name}" does not provide valid type "${type}"`)
     } else {
-      this.type = Validation[type]
+      this.type = Validation[typeString]
+    }
+  }
+
+  /**
+   * Parse default value for parameter.
+   *
+   * @param {any} default_value Default value
+   */
+  __parseDefaultValue(default_value) {
+    if (typeof default_value !== 'undefined') {
+      this.optionnal = true
+      this.default_value = this.type(default_value)
     }
   }
 }

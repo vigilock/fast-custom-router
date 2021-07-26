@@ -3,7 +3,7 @@ import InvalidArgument from '../../src/errors/InvalidArgument'
 
 import RouteParameter from '../../src/models/RouteParameter'
 
-const validConfig = { type: 'NUMBER', default_value: 0 }
+const validConfig = { type: 'NUMBER', default_value: 4321 }
 
 describe('check route parameter configuration', () => {
   test('check invalid name', () => {
@@ -26,7 +26,7 @@ describe('check route parameter configuration', () => {
       const p = new RouteParameter('valid_name', validConfig)
       expect(p.name).toEqual('valid_name')
       expect(p.type).toEqual(Number)
-      expect(p.default_value).toEqual(0)
+      expect(p.default_value).toEqual(validConfig.default_value)
     }).not.toThrow()
   })
 
@@ -135,6 +135,7 @@ describe('check route parameter configuration', () => {
         type: 'number',
         default_value: 123,
       })
+      expect(p.optionnal).toBeTruthy()
       expect(p.default_value).toEqual(123)
     }).not.toThrow()
     expect(() => {
@@ -142,6 +143,7 @@ describe('check route parameter configuration', () => {
         type: 'string',
         default_value: 'my super string',
       })
+      expect(p.optionnal).toBeTruthy()
       expect(p.default_value).toEqual('my super string')
     }).not.toThrow()
     expect(() => {
@@ -149,6 +151,7 @@ describe('check route parameter configuration', () => {
         type: 'boolean',
         default_value: false,
       })
+      expect(p.optionnal).toBeTruthy()
       expect(p.default_value).toEqual(false)
     }).not.toThrow()
   })
