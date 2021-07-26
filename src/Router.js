@@ -2,12 +2,11 @@ import { validParams } from '../src/Validation'
 
 import './__typesdef__'
 
-/**
- * Custom express router
- */
+/** Custom express router */
 export default class Router {
   /**
    * Create a custom router on top of an Express router.
+   *
    * @param {Express.Router} router Express router
    */
   constructor(router) {
@@ -16,8 +15,9 @@ export default class Router {
 
   /**
    * Get route callback
+   *
    * @param {Function} controller Route controller
-   * @param {Number} successStatusCode http status code in response to a success query, 200 by default
+   * @param {Number} successStatusCode Http status code in response to a success query, 200 by default
    * @param {(req: Express.Request) => {}} getParams Function that returns list of Parameter
    * @returns Route callback
    */
@@ -40,6 +40,7 @@ export default class Router {
 
   /**
    * GET route method
+   *
    * @param {RouterConfiguration} options Options object
    * @see {@link Express.Router.get} for further information.
    */
@@ -49,6 +50,7 @@ export default class Router {
 
   /**
    * POST route method
+   *
    * @param {RouterConfiguration} options Options object
    * @see {@link Express.Router.post} for further information.
    */
@@ -58,6 +60,7 @@ export default class Router {
 
   /**
    * PUT route method
+   *
    * @param {RouterConfiguration} options Options object
    * @see {@link Express.Router.put} for further information.
    */
@@ -67,6 +70,7 @@ export default class Router {
 
   /**
    * DELETE route method
+   *
    * @param {RouterConfiguration} options Options object
    * @see {@link Express.Router.delete} for further information.
    */

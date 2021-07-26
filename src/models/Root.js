@@ -9,14 +9,13 @@ import InvalidArgument from '../errors/InvalidArgument'
 import InvalidRouteElement from '../errors/InvalidRouteElement'
 import EmptyRoutes from '../errors/EmptyRoutes'
 
-/**
- * Root element of the custom router.
- */
+/** Root element of the custom router. */
 export default class Root extends RouterElement {
   /**
    * Parse a root object
-   * @param {String} name root name
-   * @param {RootObject} config root configuration
+   *
+   * @param {String} name Root name
+   * @param {RootObject} config Root configuration
    */
   constructor(name, config) {
     super(Root, ['name', 'root', 'routes', 'pre_middlewares', 'post_middlewares', 'routes'], config)
@@ -34,9 +33,7 @@ export default class Root extends RouterElement {
       throw new InvalidArgument(`Root.root="${this.root}" is not a valid path (using regex: ${PATH_REGEX}).`)
     }
 
-    /**
-     * Valid and create pre-middlewares
-     */
+    /** Valid and create pre-middlewares */
     if (config.pre_middlewares && !(config.pre_middlewares instanceof Array)) {
       throw new InvalidArgument(`${this.name}.pre_middlewares=${config.pre_middlewares} is not an dictionnary.`)
     }
@@ -46,9 +43,7 @@ export default class Root extends RouterElement {
       })
     }
 
-    /**
-     * Valid and create routes
-     */
+    /** Valid and create routes */
     if (config.routes && !(config.routes instanceof Object)) {
       throw new InvalidArgument(`${this.name}.routes=${config.routes} is not an dictionnary.`)
     }
@@ -66,9 +61,7 @@ export default class Root extends RouterElement {
       }
     })
 
-    /**
-     * Valid and create post-middlewares
-     */
+    /** Valid and create post-middlewares */
     if (config.post_middlewares && !(config.post_middlewares instanceof Array)) {
       throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
     }
@@ -81,7 +74,8 @@ export default class Root extends RouterElement {
 
   /**
    * Make readable this object
-   * @returns {String} instance description
+   *
+   * @returns {String} Instance description
    */
   toString() {
     let res = `<Root name="${this.name}" root="${this.root}">\n`

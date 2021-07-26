@@ -284,7 +284,7 @@ describe('check route configuration', () => {
         path: '/teapot',
         methods: routesTeapot.teapot.methods,
       })
-    })
+    }).not.toThrow()
   })
 
   test('with invalid pre_middlewares', () => {
@@ -470,16 +470,7 @@ describe('check route method configuration', () => {
     }).not.toThrow()
   })
 
-  test.skip('with invalid body', () => {
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: 'getTeapot',
-        body: ['firstMiddleware', 5, 'secondMiddleware'],
-      })
-    }).toThrow(InvalidArgument)
-  })
-
-  test.skip('with valid body', () => {
+  test('with invalid body', () => {
     expect(() => {
       new RouteMethod('GET', {
         controller: 'getTeapot',
@@ -492,21 +483,39 @@ describe('check route method configuration', () => {
         body: undefined,
       })
     }).not.toThrow()
-  })
-})
-
-describe.skip('check route body configuration', () => {
-  test('check wrong types', () => {
     expect(() => {
-      new RouteMethod('GET', {})
-    })
-  })
-
-  test('check valid types', () => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        body: NaN,
+      })
+    }).not.toThrow()
     expect(() => {
-      new RouteMethod('GET', {})
-    })
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        body: ['name', 'date', 'content'],
+      })
+    }).toThrow(InvalidArgument)
   })
 
-  test('check default value option', () => {})
+  test('with valid body', () => {
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+        body: {
+          name: {
+            type: 'STRING',
+          },
+          date: {
+            type: 'NUMBER',
+            default_value: 0,
+          },
+        },
+      })
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('GET', {
+        controller: 'getTeapot',
+      })
+    }).not.toThrow()
+  })
 })
