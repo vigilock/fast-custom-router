@@ -8,6 +8,7 @@ export default class FakeRouter {
       get: {},
       post: {},
       put: {},
+      patch: {},
       delete: {},
     }
     this.orderedCall = []
@@ -28,6 +29,13 @@ export default class FakeRouter {
   }
   put(path, route) {
     this.routes.put[path] = route
+    this.orderedCall.push({
+      path,
+      route,
+    })
+  }
+  patch(path, route) {
+    this.routes.patch[path] = route
     this.orderedCall.push({
       path,
       route,

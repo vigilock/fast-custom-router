@@ -45,7 +45,7 @@
  * @property {any} default_value Default value of the parameter, implicit optionnal declaration
  */
 
-/** @typedef {'GET' | 'POST' | 'PUT' | 'DELETE'} RequestMethod HTTP request method that is allowed */
+/** @typedef {'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'} RequestMethod HTTP request method that is allowed */
 
 /**
  * @typedef ParserConfig Parser configuration

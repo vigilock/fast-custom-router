@@ -30,7 +30,7 @@ export default class RouterElementMiddleware extends RouterElement {
   __parseMiddlewares(middlewares) {
     if (middlewares) {
       if (!(middlewares instanceof Array)) {
-        throw new InvalidArgument(`${this.child.name}.middlewares=${middlewares} is not an dictionnary.`)
+        throw new InvalidArgument(`${this.child.name}.middlewares=${middlewares} is not a dictionnary.`)
       }
       return middlewares.map(middleware => {
         return new Middleware(middleware)

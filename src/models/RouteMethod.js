@@ -78,7 +78,7 @@ export default class RouteMethod extends RouterElementMiddleware {
   __parseBody(body) {
     if (body) {
       if (Array.isArray(body) || !(body instanceof Object)) {
-        throw new InvalidArgument(`${this.name}.body=${body} is not an dictionnary.`)
+        throw new InvalidArgument(`${this.name}.body=${body} is not a dictionnary.`)
       }
       this.body = Object.keys(body).map(key => {
         return new RouteParameter(key, body[key])

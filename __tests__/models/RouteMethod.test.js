@@ -46,6 +46,9 @@ describe('check route method configuration', () => {
       new RouteMethod('PUT', routesTeapot.teapot.methods.get)
     }).not.toThrow()
     expect(() => {
+      new RouteMethod('PATCH', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
       new RouteMethod('DELETE', routesTeapot.teapot.methods.get)
     }).not.toThrow()
     expect(() => {
@@ -56,6 +59,9 @@ describe('check route method configuration', () => {
     }).not.toThrow()
     expect(() => {
       new RouteMethod('put', routesTeapot.teapot.methods.get)
+    }).not.toThrow()
+    expect(() => {
+      new RouteMethod('patch', routesTeapot.teapot.methods.get)
     }).not.toThrow()
     expect(() => {
       new RouteMethod('delete', routesTeapot.teapot.methods.get)

@@ -17,7 +17,7 @@ export default class Root extends RouterElementMiddleware {
    * @param {RootObject} config Root configuration
    */
   constructor(name, config) {
-    super(Root, ['name', 'root', 'routes', 'routes'], config)
+    super(Root, ['name', 'root', 'routes'], config)
 
     this.name = String(name)
     this.root = ''
@@ -45,7 +45,7 @@ export default class Root extends RouterElementMiddleware {
    */
   __parseRoutes(routes) {
     if (routes && !(routes instanceof Object)) {
-      throw new InvalidArgument(`${this.name}.routes=${routes} is not an dictionnary.`)
+      throw new InvalidArgument(`${this.name}.routes=${routes} is not a dictionnary.`)
     }
     if (!routes || Object.keys(routes).length === 0) {
       throw new EmptyRoutes()
@@ -57,7 +57,7 @@ export default class Root extends RouterElementMiddleware {
       } else if (el.path) {
         return new Route(key, routes[key])
       } else {
-        throw new InvalidRouteElement(`${key} is no recongnized as a Root or as a Route.`)
+        throw new InvalidRouteElement(`${key} is no recognized as a Root or as a Route.`)
       }
     })
   }
