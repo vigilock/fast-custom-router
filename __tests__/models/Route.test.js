@@ -51,66 +51,18 @@ describe('check route configuration', () => {
         methods: undefined,
       })
     }).toThrow(EmptyMethods)
+    expect(() => {
+      new Route('name', {
+        path: '/teapot',
+        methods: {},
+      })
+    }).toThrow(EmptyMethods)
   })
 
   test('check valid methods', () => {
     expect(() => {
       new Route('name', {
         path: '/teapot',
-        methods: routesTeapot.teapot.methods,
-      })
-    }).not.toThrow()
-  })
-
-  test('with invalid pre_middlewares', () => {
-    expect(() => {
-      new Route('name', {
-        path: '/teapot',
-        pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-        methods: routesTeapot.teapot.methods,
-      })
-    }).toThrow(InvalidArgument)
-  })
-
-  test('with valid pre_middlewares', () => {
-    expect(() => {
-      new Route('name', {
-        path: '/teapot',
-        pre_middlewares: null,
-        methods: routesTeapot.teapot.methods,
-      })
-    }).not.toThrow()
-    expect(() => {
-      new Route('name', {
-        path: '/teapot',
-        pre_middlewares: undefined,
-        methods: routesTeapot.teapot.methods,
-      })
-    }).not.toThrow()
-  })
-
-  test('with invalid post_middlewares', () => {
-    expect(() => {
-      new Route('name', {
-        path: '/teapot',
-        post_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-        methods: routesTeapot.teapot.methods,
-      })
-    }).toThrow(InvalidArgument)
-  })
-
-  test('with valid post_middlewares', () => {
-    expect(() => {
-      new Route('name', {
-        path: '/teapot',
-        post_middlewares: null,
-        methods: routesTeapot.teapot.methods,
-      })
-    }).not.toThrow()
-    expect(() => {
-      new Route('name', {
-        path: '/teapot',
-        post_middlewares: undefined,
         methods: routesTeapot.teapot.methods,
       })
     }).not.toThrow()

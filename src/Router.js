@@ -69,6 +69,16 @@ export default class Router {
   }
 
   /**
+   * PATCH route method
+   *
+   * @param {RouterConfiguration} options Options object
+   * @see {@link Express.Router.put} for further information.
+   */
+  patch(options) {
+    this.router.patch(options.path, this.getRoute(options.controller, options.successStatusCode, options.getParams))
+  }
+
+  /**
    * DELETE route method
    *
    * @param {RouterConfiguration} options Options object

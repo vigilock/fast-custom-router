@@ -1,11 +1,9 @@
 import { describe, expect, test } from '@jest/globals'
-import { routesTeapot } from './__constants__'
 
 import EmptyRoutes from '../../src/errors/EmptyRoutes'
 import InvalidArgument from '../../src/errors/InvalidArgument'
 
 import Root from '../../src/models/Root'
-import InvalidRouteElement from '../../src/errors/InvalidRouteElement'
 
 describe('check root configuration', () => {
   test('with invalid routes argument', () => {
@@ -44,17 +42,27 @@ describe('check root configuration', () => {
     expect(() => {
       new Root('name', {
         root: '/api',
-        routes: {
-          teapot: {
-            methods: {
-              get: {
-                controller: 'getTeapot',
-              },
-            },
-          },
-        },
+        routes: null,
       })
-    }).toThrow(InvalidRouteElement)
+    }).toThrow(EmptyRoutes)
+    expect(() => {
+      new Root('name', {
+        root: '/api',
+        routes: undefined,
+      })
+    }).toThrow(EmptyRoutes)
+    expect(() => {
+      new Root('name', {
+        root: '/api',
+        routes: NaN,
+      })
+    }).toThrow(EmptyRoutes)
+    expect(() => {
+      new Root('name', {
+        root: '/api',
+        routes: {},
+      })
+    }).toThrow(EmptyRoutes)
   })
 
   test('with valid root and routes arguments', () => {
@@ -87,60 +95,6 @@ describe('check root configuration', () => {
             },
           },
         },
-      })
-    }).not.toThrow()
-  })
-
-  test('with invalid pre_middlewares', () => {
-    expect(() => {
-      new Root('name', {
-        root: '/api',
-        pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-        routes: routesTeapot,
-      })
-    }).toThrow(InvalidArgument)
-  })
-
-  test('with valid pre_middlewares', () => {
-    expect(() => {
-      new Root('name', {
-        root: '/api',
-        pre_middlewares: null,
-        routes: routesTeapot,
-      })
-    }).not.toThrow()
-    expect(() => {
-      new Root('name', {
-        root: '/api',
-        pre_middlewares: undefined,
-        routes: routesTeapot,
-      })
-    }).not.toThrow()
-  })
-
-  test('with invalid post_middlewares', () => {
-    expect(() => {
-      new Root('name', {
-        root: '/api',
-        post_middlewares: ['firstMiddleware', 5, 'secondMiddleware'],
-        routes: routesTeapot,
-      })
-    }).toThrow(InvalidArgument)
-  })
-
-  test('with valid post_middlewares', () => {
-    expect(() => {
-      new Root('name', {
-        root: '/api',
-        post_middlewares: null,
-        routes: routesTeapot,
-      })
-    }).not.toThrow()
-    expect(() => {
-      new Root('name', {
-        root: '/api',
-        post_middlewares: undefined,
-        routes: routesTeapot,
       })
     }).not.toThrow()
   })

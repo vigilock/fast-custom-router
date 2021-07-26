@@ -47,7 +47,7 @@ export default class Root extends RouterElementMiddleware {
     if (routes && !(routes instanceof Object)) {
       throw new InvalidArgument(`${this.name}.routes=${routes} is not an dictionnary.`)
     }
-    if (!routes || routes.length === 0) {
+    if (!routes || Object.keys(routes).length === 0) {
       throw new EmptyRoutes()
     }
     this.routes = Object.keys(routes).map(key => {

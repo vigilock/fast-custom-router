@@ -56,7 +56,7 @@ export default class Route extends RouterElementMiddleware {
     if (methods && !(methods instanceof Object)) {
       throw new InvalidArgument(`${this.name}.methods=${methods} is not an dictionnary.`)
     }
-    if (!methods || methods.length === 0) {
+    if (!methods || Object.keys(methods).length === 0) {
       throw new EmptyMethods(this.name)
     }
     this.methods = Object.keys(methods).map(key => {
