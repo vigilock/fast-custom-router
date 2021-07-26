@@ -8,12 +8,11 @@ import Root from './models/Root'
 import FileNotFound from './errors/FileNotFound'
 import EmptyConfigFile from './errors/EmptyConfigFile'
 
-/**
- * Router configuration parser for express router.
- */
+/** Router configuration parser for express router. */
 export default class Parser {
   /**
    * Instanciate Parser
+   *
    * @param {Express.Router} router Express router
    * @param {ParserConfig} [config] Parser configuration
    */
@@ -31,9 +30,10 @@ export default class Parser {
 
   /**
    * Load router configuration from a file
-   * @param {String} filepath configuration file path
-   * @throws {InvalidArgument} an argument is not valid
-   * @throws {UnknownArgument} an argument is argument
+   *
+   * @param {String} filepath Configuration file path
+   * @throws {InvalidArgument} An argument is not valid
+   * @throws {UnknownArgument} An argument is argument
    */
   loadFromFile(filepath) {
     if (!fs.existsSync(filepath) || fs.lstatSync(filepath).isDirectory()) {
@@ -44,9 +44,10 @@ export default class Parser {
 
   /**
    * Load router configuration from a String
-   * @param {String} yml router configuration string
-   * @throws {InvalidArgument} an argument is not valid
-   * @throws {UnknownArgument} an argument is argument
+   *
+   * @param {String} yml Router configuration string
+   * @throws {InvalidArgument} An argument is not valid
+   * @throws {UnknownArgument} An argument is argument
    */
   loadFromString(yml) {
     if (!yml) {
@@ -59,10 +60,11 @@ export default class Parser {
 
   /**
    * Parse a configuration object
-   * @param {{String: RootObject}} config configuration object
-   * @return {[Root]} parsed configuration
-   * @throws {InvalidArgument} an argument is not valid
-   * @throws {UnknownArgument} an argument is argument
+   *
+   * @param {{ String: RootObject }} config Configuration object
+   * @returns {[Root]} Parsed configuration
+   * @throws {InvalidArgument} An argument is not valid
+   * @throws {UnknownArgument} An argument is argument
    */
   parseConfig(config) {
     return Object.keys(config).map(name => {

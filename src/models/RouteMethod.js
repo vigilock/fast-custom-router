@@ -7,16 +7,16 @@ import ControllerNotFound from '../errors/ControllerNotFound'
 import InvalidArgument from '../errors/InvalidArgument'
 
 import Middleware from './Middleware'
+import RouteParameter from './RouteParameter'
 import RouterElement from './RouterElement'
 
-/**
- * Route method of a Route.
- */
+/** Route method of a Route. */
 export default class RouteMethod extends RouterElement {
   /**
    * Intanciate RouteMethod object.
-   * @param {RequestMethod} method route method
-   * @param {RouteMethod} config route configuration
+   *
+   * @param {RequestMethod} method Route method
+   * @param {RouteMethod} config Route configuration
    */
   constructor(method, config) {
     super(RouteMethod, ['controller', 'response_code', 'pre_middlewares', 'post_middlewares', 'body'], config)
@@ -38,48 +38,38 @@ export default class RouteMethod extends RouterElement {
     this.pre_middlewares = []
     this.post_middlewares = []
 
-    /**
-     * TODO: response_code
-     */
-    /**
-     * Load controller from config.controller string
-     */
+    /** TODO: response_code */
+    /** Load controller from config.controller string */
     if (!config.controller) {
       throw new InvalidArgument(`${this.name}.controller=${config.pre_middlewares} is undefined.`)
     }
 
-    /**
-     * Valid and create pre-middlewares
-     */
-    if (config.pre_middlewares && !(config.pre_middlewares instanceof Array)) {
-      throw new InvalidArgument(`${this.name}.pre_middlewares=${config.pre_middlewares} is not an dictionnary.`)
-    }
+    /** Valid and create pre-middlewares */
     if (config.pre_middlewares) {
+      if (!(config.pre_middlewares instanceof Array)) {
+        throw new InvalidArgument(`${this.name}.pre_middlewares=${config.pre_middlewares} is not an dictionnary.`)
+      }
       this.pre_middlewares = config.pre_middlewares.map(middleware => {
         return new Middleware(middleware)
       })
     }
 
-    /**
-     * Valid and create post-middlewares
-     */
-    if (config.post_middlewares && !(config.post_middlewares instanceof Array)) {
-      throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
-    }
+    /** Valid and create post-middlewares */
     if (config.post_middlewares) {
+      if (!(config.post_middlewares instanceof Array)) {
+        throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
+      }
       this.post_middlewares = config.post_middlewares.map(middleware => {
         return new Middleware(middleware)
       })
     }
 
-    /**
-     * Valid and create body arguments
-     */
-    if (config.body && !(config.body instanceof Object)) {
-      throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
-    }
+    /** Valid and create body arguments */
     if (config.body) {
-      this.body = Object.key(config.body).map(key => {
+      if (Array.isArray(config.body) || !(config.body instanceof Object)) {
+        throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
+      }
+      this.body = Object.keys(config.body).map(key => {
         return new RouteParameter(key, config.body[key])
       })
     }
@@ -87,10 +77,11 @@ export default class RouteMethod extends RouterElement {
 
   /**
    * Load controller from name and parser configuration
-   * @param {String} controllerDir controller directory
+   *
+   * @param {String} controllerDir Controller directory
    */
   async loadController(controllerDir) {
-    const controllerPath = join(controllerDir, this.controller_name)
+    const controllerPath = join(controllerDir, this.controller_name + '.js')
     try {
       const module = await import(controllerPath)
       this.controller = module.default

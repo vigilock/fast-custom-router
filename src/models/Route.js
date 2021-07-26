@@ -7,14 +7,13 @@ import InvalidArgument from '../errors/InvalidArgument'
 import RouterElement from './RouterElement'
 import EmptyMethods from '../errors/EmptyMethods'
 
-/**
- * Route element of the custom router.
- */
+/** Route element of the custom router. */
 export default class Route extends RouterElement {
   /**
    * Instanciate Route object
-   * @param {String} name name of the route
-   * @param {RouteObject} config route configuration
+   *
+   * @param {String} name Name of the route
+   * @param {RouteObject} config Route configuration
    */
   constructor(name, config) {
     super(Route, ['name', 'path', 'query', 'pre_middlewares', 'post_middlewares', 'methods'], config)
@@ -35,11 +34,9 @@ export default class Route extends RouterElement {
       throw new InvalidArgument(`${this.root} is not a valid path (using regex: ${PATH_REGEX}).`)
     }
 
-    // Valid query parameters
+    // TODO: Valid query parameters
 
-    /**
-     * Valid and create pre-middlewares
-     */
+    /** Valid and create pre-middlewares */
     if (config.pre_middlewares && !(config.pre_middlewares instanceof Array)) {
       throw new InvalidArgument(`${this.name}.pre_middlewares=${config.pre_middlewares} is not an dictionnary.`)
     }
@@ -49,9 +46,7 @@ export default class Route extends RouterElement {
       })
     }
 
-    /**
-     * Valid and create methods
-     */
+    /** Valid and create methods */
     if (config.methods && !(config.methods instanceof Object)) {
       throw new InvalidArgument(`${this.name}.methods=${config.methods} is not an dictionnary.`)
     }
@@ -62,9 +57,7 @@ export default class Route extends RouterElement {
       return new RouteMethod(key, config.methods[key])
     })
 
-    /**
-     * Valid and create post-middlewares
-     */
+    /** Valid and create post-middlewares */
     if (config.post_middlewares && !(config.post_middlewares instanceof Array)) {
       throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
     }
@@ -77,7 +70,8 @@ export default class Route extends RouterElement {
 
   /**
    * Make readable this object
-   * @returns {String} instance description
+   *
+   * @returns {string} Instance description
    */
   toString() {
     return `<Route name="${this.name}" path="${this.path}">`
