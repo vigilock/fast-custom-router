@@ -1,76 +1,87 @@
 import '../__typesdef__'
-import { ACCEPTED_METHODS } from '../__constants__'
+import { ACCEPTED_METHODS, HTTP_RESPONSE_CODE, HTTP_DEFAULT_RESPONSE_CODE } from '../__constants__'
 
 import { join } from 'path'
 
 import ControllerNotFound from '../errors/ControllerNotFound'
 import InvalidArgument from '../errors/InvalidArgument'
 
-import Middleware from './Middleware'
 import RouteParameter from './RouteParameter'
-import RouterElement from './RouterElement'
+import RouterElementMiddleware from './RouterElementMiddleware'
 
 /** Route method of a Route. */
-export default class RouteMethod extends RouterElement {
+export default class RouteMethod extends RouterElementMiddleware {
   /**
    * Intanciate RouteMethod object.
    *
    * @param {RequestMethod} method Route method
-   * @param {RouteMethod} config Route configuration
+   * @param {RouteMethodObject} config Route configuration
    */
   constructor(method, config) {
-    super(RouteMethod, ['controller', 'response_code', 'pre_middlewares', 'post_middlewares', 'body'], config)
-
-    this.method = String(method).toUpperCase()
-
-    if (ACCEPTED_METHODS.indexOf(this.method) === -1) {
-      throw new InvalidArgument(`Router does not provide "${this.method}" method`)
-    }
-    // Valid configuration
-    if (!config) {
-      throw new InvalidArgument(`RouteMethod ${method} can not be null or undefined.`)
-    }
+    super(RouteMethod, ['controller', 'response_code', 'body'], config)
 
     this.name = String(method)
     this.controller_name = config.controller
     this.controller = undefined
+    this.response_code = undefined
     this.body = []
-    this.pre_middlewares = []
-    this.post_middlewares = []
 
-    /** TODO: response_code */
-    /** Load controller from config.controller string */
-    if (!config.controller) {
-      throw new InvalidArgument(`${this.name}.controller=${config.pre_middlewares} is undefined.`)
+    this.__parseMethod(method)
+    this.__parseControllerName(config.controller)
+    this.__parseResponseCode(config.response_code)
+    this.__parseBody(config.body)
+  }
+
+  /**
+   * Parse method name.
+   *
+   * @param {string} method HTTP method
+   */
+  __parseMethod(method) {
+    const method_name = String(method).toUpperCase()
+    if (ACCEPTED_METHODS.indexOf(method_name) === -1) {
+      throw new InvalidArgument(`Router does not provide "${method_name}" method`)
     }
+  }
 
-    /** Valid and create pre-middlewares */
-    if (config.pre_middlewares) {
-      if (!(config.pre_middlewares instanceof Array)) {
-        throw new InvalidArgument(`${this.name}.pre_middlewares=${config.pre_middlewares} is not an dictionnary.`)
-      }
-      this.pre_middlewares = config.pre_middlewares.map(middleware => {
-        return new Middleware(middleware)
-      })
+  /**
+   * Parse controller name.
+   *
+   * @param {string} controller Controller name
+   */
+  __parseControllerName(controller) {
+    if (!controller) {
+      throw new InvalidArgument(`${this.name}.controller=${controller} is undefined.`)
     }
+  }
 
-    /** Valid and create post-middlewares */
-    if (config.post_middlewares) {
-      if (!(config.post_middlewares instanceof Array)) {
-        throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
+  /**
+   * Parse HTTP response code for success controller response.
+   *
+   * @param {number} code Default HTTP response code
+   */
+  __parseResponseCode(code) {
+    this.response_code = HTTP_DEFAULT_RESPONSE_CODE
+    if (code) {
+      if (HTTP_RESPONSE_CODE.indexOf(code) === -1) {
+        throw new InvalidArgument(`${code} is not a valid HTTP response code.`)
       }
-      this.post_middlewares = config.post_middlewares.map(middleware => {
-        return new Middleware(middleware)
-      })
+      this.response_code = code
     }
+  }
 
-    /** Valid and create body arguments */
-    if (config.body) {
-      if (Array.isArray(config.body) || !(config.body instanceof Object)) {
-        throw new InvalidArgument(`${this.name}.post_middlewares=${config.post_middlewares} is not an dictionnary.`)
+  /**
+   * Parse body arguments.
+   *
+   * @param {{ string: { type: string; default_value: any } }} body Body arguments
+   */
+  __parseBody(body) {
+    if (body) {
+      if (Array.isArray(body) || !(body instanceof Object)) {
+        throw new InvalidArgument(`${this.name}.body=${body} is not an dictionnary.`)
       }
-      this.body = Object.keys(config.body).map(key => {
-        return new RouteParameter(key, config.body[key])
+      this.body = Object.keys(body).map(key => {
+        return new RouteParameter(key, body[key])
       })
     }
   }
@@ -78,7 +89,7 @@ export default class RouteMethod extends RouterElement {
   /**
    * Load controller from name and parser configuration
    *
-   * @param {String} controllerDir Controller directory
+   * @param {string} controllerDir Controller directory
    */
   async loadController(controllerDir) {
     const controllerPath = join(controllerDir, this.controller_name + '.js')
