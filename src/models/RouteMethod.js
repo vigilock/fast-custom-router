@@ -2,6 +2,7 @@ import '../__typesdef__'
 import { ACCEPTED_METHODS, HTTP_RESPONSE_CODE, HTTP_DEFAULT_RESPONSE_CODE } from '../__constants__'
 
 import { join } from 'path'
+import Express from 'express'
 
 import ControllerNotFound from '../errors/ControllerNotFound'
 import InvalidArgument from '../errors/InvalidArgument'
@@ -87,11 +88,11 @@ export default class RouteMethod extends RouterElementMiddleware {
   }
 
   /**
-   * Load controller from name and parser configuration
+   * Load controller from name and parser configuration.
    *
    * @param {string} controllerDir Controller directory
    */
-  async loadController(controllerDir) {
+  async __loadController(controllerDir) {
     const controllerPath = join(controllerDir, this.controller_name + '.js')
     try {
       const module = await import(controllerPath)
@@ -99,5 +100,72 @@ export default class RouteMethod extends RouterElementMiddleware {
     } catch (error) {
       throw new ControllerNotFound(controllerPath)
     }
+  }
+
+  /**
+   * Get valided query parameters.
+   *
+   * @param {Express.Request} req Express request
+   * @returns {{ any }} Query parameters
+   */
+  __getQuery(req) {
+    // TODO: query params
+    return req.params
+  }
+
+  /**
+   * Get valided body parameters.
+   *
+   * @param {Express.Request} req Express request
+   * @returns {{ any }} Body parameters
+   */
+  __getBody(req) {
+    // TODO: body params
+    return req.body
+  }
+
+  /**
+   * Give route function.
+   *
+   * @param {Function} controller Route controller
+   * @param {number} statusCode HTTP response code
+   * @returns {Function} Route function
+   */
+  __getRoute(controller, statusCode) {
+    return async (req, res, next) => {
+      const options = {
+        query: this.__getQuery(req),
+        body: this.__getBody(req),
+      }
+
+      try {
+        const result = await controller(options)
+        res.status(statusCode)
+        if (result) {
+          res.json(result)
+        } else {
+          res.send()
+        }
+      } catch (error) {
+        next(error)
+      }
+    }
+  }
+
+  /**
+   * Load controller from name and parser configuration.
+   *
+   * @param {Express.Router} router Express router
+   * @param {string} path Middleware path
+   * @param {ParserConfig} config Parser configuration
+   */
+  async load(router, path, config) {
+    this.__loadController(config.controller_dir)
+    const route = (_, res) => {
+      res.status(200).json({ message: 'coucou' })
+    }
+    await this.__loadPreMiddlewares(router, path, config.middleware_dir)
+    router[this.name.toLowerCase()](path, route)
+    await this.__loadPostMiddlewares(router, path, config.middleware_dir)
   }
 }

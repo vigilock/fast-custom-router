@@ -1,5 +1,7 @@
 import { join } from 'path'
 
+import Express from 'express'
+
 import InvalidArgument from '../errors/InvalidArgument'
 import MiddlewareNotFound from '../errors/MiddlewareNotFound'
 
