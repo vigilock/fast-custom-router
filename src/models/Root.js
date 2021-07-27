@@ -36,6 +36,7 @@ export default class Root extends RouterElementMiddleware {
     if (!root || !PATH_REGEX.test(root)) {
       throw new InvalidArgument(`Root.root="${root}" is not a valid path (using regex: ${PATH_REGEX}).`)
     }
+    this.root = root
   }
 
   /**

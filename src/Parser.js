@@ -2,6 +2,7 @@ import './__typesdef__'
 
 import fs from 'fs'
 import yaml from 'js-yaml'
+import { join } from 'path'
 
 import Root from './models/Root'
 
@@ -19,7 +20,9 @@ export default class Parser {
   constructor(router, config = {}) {
     if (!router) throw new TypeError('router argument is not defined')
     this.config = {
+      config_dir: 'config',
       controller_dir: 'controller',
+      middleware_dir: 'controller',
       http_default_response_code: 200,
       http_responses_code: [200, 201, 203],
     }
@@ -31,9 +34,10 @@ export default class Parser {
   /**
    * Load router configuration from a file
    *
-   * @param {string} filepath Configuration file path
+   * @param {string} filename Configuration file path
    */
-  loadFromFile(filepath) {
+  loadFromFile(filename) {
+    const filepath = join(this.config.config_dir, filename)
     if (!fs.existsSync(filepath) || fs.lstatSync(filepath).isDirectory()) {
       throw new FileNotFound(filepath)
     }

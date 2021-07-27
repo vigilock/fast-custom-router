@@ -1,45 +1,37 @@
-- apiV1:
-    root: /api/global/v1
-    pre_middlewares:
-      - logRequests
-    post_middlewares:
-      - unknownRoute
-    routes:
-      - conversations:
-          root: /conversations
+api:
+  root: /api
+  pre_middlewares:
+    - authenticate
+  post_middlewares:
+    - errorHandler
+  routes:
+    users:
+      path: /user
+      methods:
+        GET:
+          controller: getUsers
+        POST:
+          controller: postUsers
+          response_code: 201
+          body:
+            username:
+              type: string
+            password:
+              type: string
+            age:
+              type: number
+          post_middlewares:
+           - logRequests
+    user:
+      path: /user/:id
+      query:
+        id: Number
+      methods:
+        GET:
+          controller: getUser
+        DELETE:
+          controller: deleteUser
           pre_middlewares:
-            - ensureAuthentification
-          routes:
-            - conversations:
-                path: /
-                methods:
-                  - GET:
-                      controller: getConversations
-                  - POST:
-                      controller: postConversations
-                      response_code: 201
-                      pre_middlewares:
-                        - ensurePermission
-            - conversation:
-                path: /:id
-                query:
-                  - id: ObjectId
-                pre_middlewares:
-                  - ensurePermission
-                methods:
-                  - GET:
-                      controller: getConversation
-                  - PUT:
-                      controller: putConversation
-                      response_code: 204
-                      body:
-                        - name:
-                            type: String
-                        - members:
-                            type: [ObjectId]
-                        - test:
-                            type: Number
-                            defaultValue: 5
-                  - DELETE:
-                      controller: deleteConversation
-                      response_code: 205
+            - checkUserPermissions
+          post_middlewares:
+            - logRequests
