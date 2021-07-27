@@ -46,7 +46,7 @@ describe('check Middleware configuration', () => {
   })
 })
 
-describe('check middlewares load', () => {
+describe.skip('check middlewares load', () => {
   const router = new FakeRouter()
   const path = '/api'
   beforeEach(() => router.init())

@@ -61,7 +61,7 @@ describe('check router element with middlewares', () => {
   })
 })
 
-describe('load middlewares', () => {
+describe.skip('load middlewares', () => {
   const router = new FakeRouter()
   beforeEach(() => router.init())
 
