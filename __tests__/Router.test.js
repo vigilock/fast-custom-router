@@ -29,13 +29,10 @@ describe('check router template route', () => {
         },
       ],
     )
-    try {
-      await route(null, fakeResponse, error => {
-        expect(error).toBeNull()
-      })
-    } catch (error) {
+
+    await route(null, fakeResponse, error => {
       expect(error).toBeNull()
-    }
+    })
   })
 
   test('check route call controller with wrong parameters', async () => {
@@ -53,13 +50,10 @@ describe('check router template route', () => {
         },
       ],
     )
-    try {
-      await route(null, fakeResponse, err => {
-        expect(err.message).toEqual('wrong parameter')
-      })
-    } catch (error) {
-      expect(error).toBeNull()
-    }
+
+    await route(null, fakeResponse, error => {
+      expect(error.message).toEqual('wrong parameter')
+    })
   })
 
   test('check route call controller with default parameters', async () => {
@@ -77,26 +71,20 @@ describe('check router template route', () => {
         },
       ],
     )
-    try {
-      await route(null, fakeResponse, error => {
-        expect(error).toBeNull()
-      })
-    } catch (error) {
+
+    await route(null, fakeResponse, error => {
       expect(error).toBeNull()
-    }
+    })
   })
 
   test('check route call controller with json response', async () => {
     const route = router.getRoute(() => 'my super response', 200)
     const res = new FakeResponse()
-    try {
-      await route(null, res, error => {
-        expect(error).toBeNull()
-      })
-      expect(res._json).toEqual('my super response')
-    } catch (error) {
+
+    await route(null, res, error => {
       expect(error).toBeNull()
-    }
+    })
+    expect(res._json).toBe('my super response')
   })
 })
 

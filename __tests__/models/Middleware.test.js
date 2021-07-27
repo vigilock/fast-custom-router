@@ -1,11 +1,12 @@
 import { describe, expect, test, beforeEach } from '@jest/globals'
 import { config } from '../__constants__'
 
-import MiddlewareNotFound from '../../src/errors/MiddlewareNotFound'
-
-import InvalidArgument from '../../src/errors/InvalidArgument'
-import Middleware from '../../src/models/Middleware'
 import FakeRouter from '../mock/FakeRouter'
+
+import MiddlewareNotFound from '../../src/errors/MiddlewareNotFound'
+import InvalidArgument from '../../src/errors/InvalidArgument'
+
+import Middleware from '../../src/models/Middleware'
 
 describe('check Middleware configuration', () => {
   test('check invalid name', () => {
@@ -46,7 +47,6 @@ describe('check Middleware configuration', () => {
 })
 
 describe('check middlewares load', () => {
-  const middleware = new Middleware('simpleMiddleware')
   const router = new FakeRouter()
   const path = '/api'
   beforeEach(() => router.init())
@@ -65,15 +65,14 @@ describe('check middlewares load', () => {
 
     test('check middleware import', async () => {
       const middleware = new Middleware('simpleMiddleware')
-      await expect(async () => {
-        await expect(middleware.load(router, path, config.middleware_dir)).resolves.not.toThrow()
-        expect(middleware.middleware).toBeDefined()
-      }).not.toThrow()
+      await middleware.load(router, path, config.middleware_dir)
+      expect(middleware.middleware).toBeDefined()
     })
   })
 
   test('check good declaration', async () => {
-    await expect(middleware.load(router, path, config.middleware_dir)).resolves.not.toThrow()
+    const middleware = new Middleware('simpleMiddleware')
+    await middleware.load(router, path, config.middleware_dir)
     expect(router.orderedCall).toHaveLength(1)
     expect(router.routes.use[path]).toBeDefined()
     expect(typeof router.routes.use[path]).toBe('function')

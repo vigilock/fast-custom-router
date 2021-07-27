@@ -19,7 +19,7 @@ export default class Router {
    * @param {Function} controller Route controller
    * @param {number} successStatusCode Http status code in response to a success query, 200 by default
    * @param {(req: Express.Request) => {}} getParams Function that returns list of Parameter
-   * @returns {(req: Express.Request, res: Express.Response, next: () => {}) => {}} Route callback
+   * @returns {(req: Express.Request, res: Express.Response, next: () => {}) => {async () =>{}}} } Route callback
    */
   getRoute(controller, successStatusCode = 200, getParams = null) {
     return async (req, res, next) => {

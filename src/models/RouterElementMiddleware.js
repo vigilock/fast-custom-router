@@ -17,9 +17,6 @@ export default class RouterElementMiddleware extends RouterElement {
   constructor(child, params = [], config) {
     super(child, [...params, 'pre_middlewares', 'post_middlewares'], config)
 
-    this.pre_middlewares = []
-    this.post_middlewares = []
-
     this.pre_middlewares = this.__parseMiddlewares(config.pre_middlewares)
     this.post_middlewares = this.__parseMiddlewares(config.post_middlewares)
   }
