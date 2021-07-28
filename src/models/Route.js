@@ -7,6 +7,7 @@ import RouteMethod from './RouteMethod'
 import InvalidArgument from '../errors/InvalidArgument'
 import EmptyMethods from '../errors/EmptyMethods'
 import RouterElementMiddleware from './RouterElementMiddleware'
+import RouteParameter from './RouteParameter'
 
 /** Route element of the custom router. */
 export default class Route extends RouterElementMiddleware {
@@ -48,7 +49,17 @@ export default class Route extends RouterElementMiddleware {
    * @param {[RouteParameterObject]} query List of parameters
    */
   __parseQueryParameters(query) {
-    // TODO: Valid query parameters
+    if (query) {
+      if (Array.isArray(query) || !(query instanceof Object)) {
+        throw new InvalidArgument(`${this.name}.query=${query} is not an dictionnary.`)
+      }
+      this.query = Object.keys(query).map(key => {
+        const param = {
+          type: query[key],
+        }
+        return new RouteParameter(key, param)
+      })
+    }
   }
 
   /**
@@ -64,7 +75,7 @@ export default class Route extends RouterElementMiddleware {
       throw new EmptyMethods(this.name)
     }
     this.methods = Object.keys(methods).map(key => {
-      return new RouteMethod(key, methods[key])
+      return new RouteMethod(key, { ...methods[key], query: this.query })
     })
   }
 

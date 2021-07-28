@@ -19,12 +19,14 @@ export default class RouteMethod extends RouterElementMiddleware {
    * @param {RouteMethodObject} config Route configuration
    */
   constructor(method, config) {
-    super(RouteMethod, ['controller', 'response_code', 'body'], config)
+    super(RouteMethod, ['controller', 'response_code', 'query', 'body'], config)
 
     this.name = String(method)
     this.controller_name = config.controller
     this.controller = undefined
     this.response_code = undefined
+    /** @type {[RouteParameter]} */
+    this.query = config.query
     /** @type {[RouteParameter]} */
     this.body = []
 
@@ -113,8 +115,11 @@ export default class RouteMethod extends RouterElementMiddleware {
    * @returns {{ any }} Query parameters
    */
   __getQuery(req) {
-    // TODO: query params
-    return req.params
+    const res = {}
+    this.query.forEach(param => {
+      res[param.name] = param.valid(req.params[param.name])
+    })
+    return res
   }
 
   /**
