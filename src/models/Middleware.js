@@ -1,18 +1,18 @@
-import { join } from 'path'
-
 import Express from 'express'
 
 import InvalidArgument from '../errors/InvalidArgument'
-import MiddlewareNotFound from '../errors/MiddlewareNotFound'
+
+import RouterElement from './RouterElement'
 
 /** Middleware element for custom router. */
-export default class Middleware {
+export default class Middleware extends RouterElement {
   /**
    * Instanciate Middleware object
    *
    * @param {string} name Middleware name
    */
   constructor(name) {
+    super(Middleware, [], {})
     this.name = undefined
     this.middleware = undefined
 
@@ -34,27 +34,12 @@ export default class Middleware {
   /**
    * Load middleware from name and parser configuration
    *
-   * @param {string} middlewareDir Controller directory
-   */
-  async __loadMiddleware(middlewareDir) {
-    const middlewarePath = join(middlewareDir, this.name + '.js')
-    try {
-      const module = await import(middlewarePath)
-      this.middleware = module.default
-    } catch (error) {
-      throw new MiddlewareNotFound(middlewarePath)
-    }
-  }
-
-  /**
-   * Load middleware from name and parser configuration
-   *
    * @param {Express.Router} router Express router
    * @param {string} path Middleware path
    * @param {string} middlewareDir Controller directory
    */
   async load(router, path, middlewareDir) {
-    await this.__loadMiddleware(middlewareDir)
+    this.middleware = await this.__loadModule(this.name, middlewareDir)
     router.use(path, this.middleware)
   }
 

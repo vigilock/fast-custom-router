@@ -1,4 +1,7 @@
+import { join } from 'path'
+
 import InvalidArgument from '../errors/InvalidArgument'
+import ModuleNotFound from '../errors/ModuleNotFound'
 
 /** Check if child element has unused arguments. */
 export default class RouterElement {
@@ -40,6 +43,29 @@ export default class RouterElement {
           console.warn(`RouterElement:WARN: "${key}" key is not used by ${this.child.name}.`)
         }
       })
+    }
+  }
+
+  /**
+   * Load controller from name and parser configuration.
+   *
+   * @param {string} name Module name
+   * @param {string} directory Module directory
+   * @returns {Function} Module
+   */
+  async __loadModule(name, directory) {
+    const [file_path, module_name] = name.split(':')
+    const module_path = join(directory, file_path + '.js')
+    try {
+      const module = await import(module_path)
+      if (module_name && module[module_name]) {
+        return module[module_name]
+      } else if (module.default) {
+        return module.default
+      }
+      throw null
+    } catch (error) {
+      throw new ModuleNotFound(module_path)
     }
   }
 }

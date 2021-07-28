@@ -1,10 +1,8 @@
 import '../__typesdef__'
 import { ACCEPTED_METHODS, HTTP_RESPONSE_CODE, HTTP_DEFAULT_RESPONSE_CODE } from '../__constants__'
 
-import { join } from 'path'
 import Express from 'express'
 
-import ControllerNotFound from '../errors/ControllerNotFound'
 import InvalidArgument from '../errors/InvalidArgument'
 
 import RouteParameter from './RouteParameter'
@@ -91,24 +89,6 @@ export default class RouteMethod extends RouterElementMiddleware {
   }
 
   /**
-   * Load controller from name and parser configuration.
-   *
-   * @param {string} controllerDir Controller directory
-   */
-  async __loadController(controllerDir) {
-    const controllerPath = join(controllerDir, this.controller_name + '.js')
-    try {
-      const module = await import(controllerPath)
-      this.controller = module.default
-    } catch (error) {
-      throw new ControllerNotFound(controllerPath)
-    }
-    if (!this.controller) {
-      throw new ControllerNotFound(controllerPath)
-    }
-  }
-
-  /**
    * Get valided query parameters.
    *
    * @param {Express.Request} req Express request
@@ -183,7 +163,7 @@ export default class RouteMethod extends RouterElementMiddleware {
    * @param {ParserConfig} config Parser configuration
    */
   async load(router, path, config) {
-    await this.__loadController(config.controller_dir)
+    this.controller = await this.__loadModule(this.controller_name, config.controller_dir)
     const route = this.__getRoute(this.controller, this.response_code)
 
     await this.__loadPreMiddlewares(router, path, config.middleware_dir)
