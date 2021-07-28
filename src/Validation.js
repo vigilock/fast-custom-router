@@ -49,7 +49,13 @@ export function validParams(params, next) {
 export default {
   NUMBER: Number,
   STRING: String,
-  BOOLEAN: Boolean,
+  BOOLEAN: value => {
+    if (typeof value === 'string') {
+      if (value === 'true' || value === '1') return true
+      else if (value === 'false' || value === '0') return false
+    }
+    return Boolean(value)
+  },
   /* eslint no-useless-escape: "off" */
   MAIL: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
 }

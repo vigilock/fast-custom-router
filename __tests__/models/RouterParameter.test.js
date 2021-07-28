@@ -106,27 +106,6 @@ describe('check route parameter configuration', () => {
       })
       expect(p.type).toBe(String)
     }).not.toThrow()
-    expect(() => {
-      const p = new RouteParameter('name', {
-        type: 'boolean',
-        default_value: 0,
-      })
-      expect(p.type).toBe(Boolean)
-    }).not.toThrow()
-    expect(() => {
-      const p = new RouteParameter('name', {
-        type: 'Boolean',
-        default_value: 0,
-      })
-      expect(p.type).toBe(Boolean)
-    }).not.toThrow()
-    expect(() => {
-      const p = new RouteParameter('name', {
-        type: 'BOOLEAN',
-        default_value: 0,
-      })
-      expect(p.type).toBe(Boolean)
-    }).not.toThrow()
   })
 
   test('check default value', () => {

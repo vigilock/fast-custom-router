@@ -84,7 +84,7 @@ describe('check root configuration', () => {
               getUser: {
                 path: '/:id',
                 query: {
-                  id: 'ObjectId',
+                  id: 'number',
                 },
                 methods: {
                   get: {
