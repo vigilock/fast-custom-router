@@ -65,8 +65,8 @@ export default class Root extends RouterElementMiddleware {
   async load(router, path, config) {
     const rootPath = path + this.root
     await this.__loadPreMiddlewares(router, rootPath, config.middleware_dir)
-    for (let i = 0; i < this.routes.length; i++) {
-      await this.routes[i].load(router, rootPath, config)
+    for (const route in this.routes) {
+      await route.load(router, rootPath, config)
     }
     await this.__loadPostMiddlewares(router, rootPath, config.middleware_dir)
   }

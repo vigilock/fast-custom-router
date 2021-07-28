@@ -9,6 +9,7 @@ import FileNotFound from '../src/errors/FileNotFound'
 import InvalidArgument from '../src/errors/InvalidArgument'
 
 import FakeRouter from './mock/FakeRouter'
+import InvalidRouteElement from '../src/errors/InvalidRouteElement'
 
 const fakeExpressRouter = new FakeRouter()
 const parser = new Parser(fakeExpressRouter, config)
@@ -58,11 +59,11 @@ describe('check throwed exceptions on bad files or on creation', () => {
       parser.parseConfig({
         my_super_root: null,
       })
-    }).toThrow(InvalidArgument)
+    }).toThrow(InvalidRouteElement)
     expect(() => {
       parser.parseConfig({
         my_super_root: undefined,
       })
-    }).toThrow(InvalidArgument)
+    }).toThrow(InvalidRouteElement)
   })
 })

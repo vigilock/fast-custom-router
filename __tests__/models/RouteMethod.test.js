@@ -1,13 +1,18 @@
-import { describe, expect, test, beforeEach } from '@jest/globals'
+import { describe, expect, test, beforeEach, jest } from '@jest/globals'
 import { routesTeapot } from './__constants__'
 import { config } from '../__constants__'
 
 import FakeRouter from '../mock/FakeRouter'
+import getTeapot from '../controller/getTeapot'
 
 import InvalidArgument from '../../src/errors/InvalidArgument'
-import ControllerNotFound from '../../src/errors/ControllerNotFound'
+import ModuleNotFound from '../../src/errors/ModuleNotFound'
 
 import RouteMethod from '../../src/models/RouteMethod'
+
+beforeEach(() => {
+  jest.useFakeTimers()
+})
 
 describe('check route method configuration', () => {
   test('check invalid configuration', () => {
@@ -119,7 +124,7 @@ describe('load route with express', () => {
   const path = '/api/user'
   beforeEach(() => router.init())
 
-  describe.skip('check controller import', () => {
+  describe('check controller import', () => {
     test('check wrong controller', async () => {
       expect(() => {
         new RouteMethod('GET', {
@@ -134,22 +139,25 @@ describe('load route with express', () => {
       const method = new RouteMethod('post', {
         controller: 'nonexistingController',
       })
-      await expect(method.__loadController(config.controller_dir))
-        .rejects.toThrow(ControllerNotFound)
+      jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+      await expect(method.load(router, path, config))
+        .rejects.toThrow(ModuleNotFound)
         .catch(() => {})
     })
 
     test('check controller import', async () => {
       const method = new RouteMethod('post', routesTeapot.teapot.methods.get)
-      await method.__loadController(config.controller_dir)
+      jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+      await method.load(router, path, config)
       expect(method.controller).toBeDefined()
     })
   })
 
-  test.skip('load route without middlewares', async () => {
+  test('load route without middlewares', async () => {
     const method = new RouteMethod('GET', {
       controller: 'getTeapot',
     })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
     await expect(method.load(router, path, config))
       .resolves.not.toThrow()
       .catch(() => {})
@@ -158,11 +166,12 @@ describe('load route with express', () => {
     expect(router.orderedCall[0].route).toBeDefined()
   })
 
-  test.skip('load route with pre middleware', async () => {
+  test('load route with pre middleware', async () => {
     const method = new RouteMethod('GET', {
       controller: 'getTeapot',
       pre_middlewares: ['simpleMiddleware'],
     })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
     await expect(method.load(router, path, config))
       .resolves.not.toThrow()
       .catch(() => {})
@@ -173,11 +182,12 @@ describe('load route with express', () => {
     expect(router.orderedCall[1].route).toBeDefined()
   })
 
-  test.skip('load route with post middleware', async () => {
+  test('load route with post middleware', async () => {
     const method = new RouteMethod('GET', {
       controller: 'getTeapot',
       post_middlewares: ['simpleMiddleware'],
     })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
     await expect(method.load(router, path, config)).resolves.not.toThrow()
     expect(router.orderedCall).toHaveLength(2)
     expect(router.routes.get['/api/user']).toBeDefined()
@@ -186,12 +196,13 @@ describe('load route with express', () => {
     expect(router.orderedCall[1].middleware).toBeDefined()
   })
 
-  test.skip('load route with both pre and post middlewares', async () => {
+  test('load route with both pre and post middlewares', async () => {
     const method = new RouteMethod('GET', {
       controller: 'getTeapot',
       pre_middlewares: ['simpleMiddleware'],
       post_middlewares: ['simpleMiddleware'],
     })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
     await expect(method.load(router, path, config))
       .resolves.not.toThrow()
       .catch(() => {})

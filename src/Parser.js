@@ -74,9 +74,9 @@ export default class Parser {
       if (key === 'import') {
         res.push(new Import(el, parserConfig))
       } else {
-        if (el.root) {
+        if (el?.root) {
           res.push(new Root(key, el, parserConfig))
-        } else if (el.path) {
+        } else if (el?.path) {
           res.push(new Route(key, el))
         } else {
           throw new InvalidRouteElement(`${key} is no recongnized as a Root or as a Route.`)
@@ -96,9 +96,9 @@ export default class Parser {
   }
 
   /** Load parsed objects and hydrate express router. */
-  load() {
-    this.parsedObjects.forEach(obj => {
-      obj.load(this.router, '', this.config)
-    })
+  async load() {
+    for (const obj in this.parsedObjects) {
+      await obj.load(this.router, '', this.config)
+    }
   }
 }

@@ -48,8 +48,9 @@ export default class RouterElementMiddleware extends RouterElement {
    * @param {string} middlewareDir Middleware directory path
    */
   async __loadMiddlewares(middlewares, router, path, middlewareDir) {
-    for (let i = 0; i < middlewares.length; i++) {
-      await middlewares[i].load(router, path, middlewareDir)
+    /** @type {Middleware} */
+    for (const middleware of middlewares) {
+      await middleware.load(router, path, middlewareDir)
     }
   }
 

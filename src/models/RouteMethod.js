@@ -7,6 +7,7 @@ import InvalidArgument from '../errors/InvalidArgument'
 
 import RouteParameter from './RouteParameter'
 import RouterElementMiddleware from './RouterElementMiddleware'
+import RouterElement from './RouterElement'
 
 /** Route method of a Route. */
 export default class RouteMethod extends RouterElementMiddleware {

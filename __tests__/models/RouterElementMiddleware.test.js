@@ -1,7 +1,8 @@
-import { describe, expect, test, beforeEach } from '@jest/globals'
+import { describe, expect, test, beforeEach, jest } from '@jest/globals'
 import { config } from '../__constants__'
 
 import FakeRouter from '../mock/FakeRouter'
+import SimpleMiddleware from '../middleware/simpleMiddleware'
 
 import InvalidArgument from '../../src/errors/InvalidArgument'
 
@@ -61,12 +62,13 @@ describe('check router element with middlewares', () => {
   })
 })
 
-describe.skip('load middlewares', () => {
+describe('load middlewares', () => {
   const router = new FakeRouter()
   beforeEach(() => router.init())
 
   test('load empty middlewares lists', async () => {
     const el = new RouterElementMiddleware(Object, [], {})
+    jest.spyOn(el, '__loadModule').mockImplementation(() => SimpleMiddleware)
     await el.__loadPreMiddlewares(router, '/', config.middleware_dir)
     await el.__loadPostMiddlewares(router, '/', config.middleware_dir)
   })
@@ -75,6 +77,7 @@ describe.skip('load middlewares', () => {
     const el = new RouterElementMiddleware(Object, [], {
       pre_middlewares: ['simpleMiddleware'],
     })
+    jest.spyOn(el.pre_middlewares[0], '__loadModule').mockImplementation(() => SimpleMiddleware)
     await el.__loadPreMiddlewares(router, '/', config.middleware_dir)
     await el.__loadPostMiddlewares(router, '/', config.middleware_dir)
   })
@@ -83,6 +86,7 @@ describe.skip('load middlewares', () => {
     const el = new RouterElementMiddleware(Object, [], {
       post_middlewares: ['simpleMiddleware'],
     })
+    jest.spyOn(el.post_middlewares[0], '__loadModule').mockImplementation(() => SimpleMiddleware)
     await el.__loadPreMiddlewares(router, '/', config.middleware_dir)
     await el.__loadPostMiddlewares(router, '/', config.middleware_dir)
   })
@@ -92,6 +96,8 @@ describe.skip('load middlewares', () => {
       pre_middlewares: ['simpleMiddleware'],
       post_middlewares: ['simpleMiddleware'],
     })
+    jest.spyOn(el.pre_middlewares[0], '__loadModule').mockImplementation(() => SimpleMiddleware)
+    jest.spyOn(el.post_middlewares[0], '__loadModule').mockImplementation(() => SimpleMiddleware)
     await el.__loadPreMiddlewares(router, '/', config.middleware_dir)
     await el.__loadPostMiddlewares(router, '/', config.middleware_dir)
   })

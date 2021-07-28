@@ -51,7 +51,7 @@ export default class RouterElement {
    *
    * @param {string} name Module name
    * @param {string} directory Module directory
-   * @returns {Function} Module
+   * @returns {Promise<Function>} Module
    */
   async __loadModule(name, directory) {
     const [file_path, module_name] = name.split(':')
@@ -65,7 +65,10 @@ export default class RouterElement {
       }
       throw null
     } catch (error) {
-      throw new ModuleNotFound(module_path)
+      if (!error) {
+        throw new ModuleNotFound(module_path)
+      }
+      throw error
     }
   }
 }

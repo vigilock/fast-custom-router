@@ -48,8 +48,8 @@ export default class Import extends RouterElement {
    * @param {ParserConfig} config Parser configuration
    */
   async load(router, path, config) {
-    for (let i = 0; i < this.routes.length; i++) {
-      await this.routes[i].load(router, path, config)
+    for (const route in this.routes) {
+      await route.load(router, path, config)
     }
   }
 }

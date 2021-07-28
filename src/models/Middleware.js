@@ -13,6 +13,7 @@ export default class Middleware extends RouterElement {
    */
   constructor(name) {
     super(Middleware, [], {})
+
     this.name = undefined
     this.middleware = undefined
 

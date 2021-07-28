@@ -1,5 +1,6 @@
 export default {
   testEnvironment: 'jest-environment-node',
+  transform: {},
   verbose: false,
   moduleFileExtensions: ['js', 'jsx', 'json'],
   moduleDirectories: ['node_modules', 'bower_components', 'src'],
