@@ -64,6 +64,22 @@ export default class Root extends RouterElementMiddleware {
   }
 
   /**
+   * Load sub root and routes from name and parser configuration.
+   *
+   * @param {Express.Router} router Express router
+   * @param {string} path Middleware path
+   * @param {ParserConfig} config Parser configuration
+   */
+  async load(router, path, config) {
+    const rootPath = path + this.root
+    await this.__loadPreMiddlewares(router, rootPath, config.middleware_dir)
+    for (let i = 0; i < this.routes.length; i++) {
+      await this.routes[i].load(router, rootPath, config)
+    }
+    await this.__loadPostMiddlewares(router, rootPath, config.middleware_dir)
+  }
+
+  /**
    * Make readable this object
    *
    * @returns {string} Instance description

@@ -12,6 +12,6 @@ export default class ControllerNotFound extends Error {
   constructor(filepath) {
     super()
     this.name = 'Controller not found'
-    this.message = `"${filepath}" is not a valid module path.`
+    this.message = `"${filepath}" is not a valid module path, or does not provide default export.`
   }
 }

@@ -3,6 +3,7 @@ import './__typesdef__'
 import fs from 'fs'
 import yaml from 'js-yaml'
 import { join } from 'path'
+import Express from 'express'
 
 import Root from './models/Root'
 
@@ -18,7 +19,10 @@ export default class Parser {
    * @param {ParserConfig} [config] Parser configuration
    */
   constructor(router, config = {}) {
-    if (!router) throw new TypeError('router argument is not defined')
+    if (!router) {
+      throw new TypeError('router argument is not defined')
+    }
+    this.router = router
     this.config = {
       config_dir: 'config',
       controller_dir: 'controller',
@@ -26,6 +30,8 @@ export default class Parser {
       http_default_response_code: 200,
       http_responses_code: [200, 201, 203],
     }
+    /** @type {[Root | Route]} */
+    this.parsedObjects = []
     if (config) {
       this.config = { ...this.config, ...config }
     }
@@ -36,12 +42,12 @@ export default class Parser {
    *
    * @param {string} filename Configuration file path
    */
-  loadFromFile(filename) {
+  parseFromFile(filename) {
     const filepath = join(this.config.config_dir, filename)
     if (!fs.existsSync(filepath) || fs.lstatSync(filepath).isDirectory()) {
       throw new FileNotFound(filepath)
     }
-    this.loadFromString(fs.readFileSync(filepath))
+    this.parseFromString(fs.readFileSync(filepath))
   }
 
   /**
@@ -49,7 +55,7 @@ export default class Parser {
    *
    * @param {string} yml Router configuration string
    */
-  loadFromString(yml) {
+  parseFromString(yml) {
     if (!yml) {
       throw new EmptyConfigFile()
     }
@@ -62,11 +68,17 @@ export default class Parser {
    * Parse a configuration object
    *
    * @param {{ string: RootObject }} config Configuration object
-   * @returns {[Root]} Parsed configuration
    */
   parseConfig(config) {
-    return Object.keys(config).map(name => {
+    this.parsedObjects = Object.keys(config).map(name => {
       return new Root(name, config[name])
+    })
+  }
+
+  /** Load parsed objects and hydrate express router. */
+  load() {
+    this.parsedObjects.forEach(obj => {
+      obj.load(this.router, '', this.config)
     })
   }
 }

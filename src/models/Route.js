@@ -1,5 +1,7 @@
 import { PATH_REGEX } from '../__constants__'
 
+import Express from 'express'
+
 import RouteMethod from './RouteMethod'
 
 import InvalidArgument from '../errors/InvalidArgument'
@@ -20,6 +22,8 @@ export default class Route extends RouterElementMiddleware {
     this.name = String(name)
     this.path = config.path
     this.query = []
+    /** @type {[RouteMethod]} */
+    this.methods = []
 
     this.__parsePath(config.path)
     this.__parseQueryParameters(config.query)
@@ -62,6 +66,22 @@ export default class Route extends RouterElementMiddleware {
     this.methods = Object.keys(methods).map(key => {
       return new RouteMethod(key, methods[key])
     })
+  }
+
+  /**
+   * Load routes from name and parser configuration.
+   *
+   * @param {Express.Router} router Express router
+   * @param {string} path Middleware path
+   * @param {ParserConfig} config Parser configuration
+   */
+  async load(router, path, config) {
+    const routePath = path + this.path
+    await this.__loadPreMiddlewares(router, routePath, config.middleware_dir)
+    for (let i = 0; i < this.methods.length; i++) {
+      await this.methods[i].load(router, routePath, config)
+    }
+    await this.__loadPostMiddlewares(router, routePath, config.middleware_dir)
   }
 
   /**

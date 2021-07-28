@@ -27,22 +27,22 @@ describe('check throwed exceptions on bad files or on creation', () => {
 
   test('on file not found or is directory', () => {
     expect(() => {
-      parser.loadFromFile('wrongFile.yaml')
+      parser.parseFromFile('wrongFile.yaml')
     }).toThrow(FileNotFound)
     expect(() => {
-      parser.loadFromFile('.')
+      parser.parseFromFile('.')
     }).toThrow(FileNotFound)
   })
 
   test('on invalid yaml syntax', () => {
     expect(() => {
-      parser.loadFromFile('exceptionsBadYAML.yaml')
+      parser.parseFromFile('exceptionsBadYAML.yaml')
     }).toThrow(YAMLException)
   })
 
   test('on empty configuration', () => {
     expect(() => {
-      parser.loadFromString('')
+      parser.parseFromString('')
     }).toThrow(EmptyConfigFile)
   })
 

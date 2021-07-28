@@ -25,6 +25,7 @@ export default class RouteMethod extends RouterElementMiddleware {
     this.controller_name = config.controller
     this.controller = undefined
     this.response_code = undefined
+    /** @type {[RouteParameter]} */
     this.body = []
 
     this.__parseMethod(method)
@@ -100,6 +101,9 @@ export default class RouteMethod extends RouterElementMiddleware {
     } catch (error) {
       throw new ControllerNotFound(controllerPath)
     }
+    if (!this.controller) {
+      throw new ControllerNotFound(controllerPath)
+    }
   }
 
   /**
@@ -120,8 +124,11 @@ export default class RouteMethod extends RouterElementMiddleware {
    * @returns {{ any }} Body parameters
    */
   __getBody(req) {
-    // TODO: body params
-    return req.body
+    const res = {}
+    this.body.forEach(param => {
+      res[param.name] = param.valid(req.body[param.name])
+    })
+    return res
   }
 
   /**
@@ -133,21 +140,32 @@ export default class RouteMethod extends RouterElementMiddleware {
    */
   __getRoute(controller, statusCode) {
     return async (req, res, next) => {
-      const options = {
-        query: this.__getQuery(req),
-        body: this.__getBody(req),
-      }
+      let query, body
+      let valid = true
 
       try {
-        const result = await controller(options)
-        res.status(statusCode)
-        if (result) {
-          res.json(result)
-        } else {
-          res.send()
-        }
+        query = this.__getQuery(req)
+        body = this.__getBody(req)
       } catch (error) {
-        next(error)
+        valid = false
+      }
+      const options = {
+        query,
+        body,
+      }
+
+      if (valid) {
+        try {
+          const result = await controller(options)
+          res.status(statusCode)
+          if (result) {
+            res.json(result)
+          } else {
+            res.send()
+          }
+        } catch (error) {
+          next(error)
+        }
       }
     }
   }
@@ -160,10 +178,9 @@ export default class RouteMethod extends RouterElementMiddleware {
    * @param {ParserConfig} config Parser configuration
    */
   async load(router, path, config) {
-    this.__loadController(config.controller_dir)
-    const route = (_, res) => {
-      res.status(200).json({ message: 'coucou' })
-    }
+    await this.__loadController(config.controller_dir)
+    const route = this.__getRoute(this.controller, this.response_code)
+
     await this.__loadPreMiddlewares(router, path, config.middleware_dir)
     router[this.name.toLowerCase()](path, route)
     await this.__loadPostMiddlewares(router, path, config.middleware_dir)

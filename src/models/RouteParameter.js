@@ -21,6 +21,7 @@ export default class RouteParameter extends RouterElement {
     super(RouteParameter, ['type', 'default_value'], config)
 
     this.name = name
+    /** @type {RegExp | Function} */
     this.type = undefined
     this.optionnal = false
     this.default_value = undefined
@@ -64,6 +65,33 @@ export default class RouteParameter extends RouterElement {
     if (typeof default_value !== 'undefined') {
       this.optionnal = true
       this.default_value = this.type(default_value)
+    }
+  }
+
+  /**
+   * Valid data on request.
+   *
+   * @param {any} value Value to be valided
+   * @returns {any} Valided value
+   */
+  valid(value) {
+    if ((value === undefined || value === null) && this.optionnal) {
+      return this.default_value
+    }
+    if (typeof this.type === 'function') {
+      return this.type(value)
+    } else if (this.type instanceof RegExp) {
+      if (!this.type.test(value)) {
+        throw {
+          code: 400,
+          detail: `'${value}' doesn't match ${this.type} regex.`,
+        }
+      }
+    } else {
+      throw {
+        code: 500,
+        detail: `'${value}' validation failed.`,
+      }
     }
   }
 }
