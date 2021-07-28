@@ -2,11 +2,10 @@ import '../__typesdef__'
 import { PATH_REGEX } from '../__constants__'
 
 import InvalidArgument from '../errors/InvalidArgument'
-import InvalidRouteElement from '../errors/InvalidRouteElement'
 import EmptyRoutes from '../errors/EmptyRoutes'
 import RouterElementMiddleware from './RouterElementMiddleware'
 
-import Route from './Route'
+import Parser from '../Parser'
 
 /** Root element of the custom router. */
 export default class Root extends RouterElementMiddleware {
@@ -15,8 +14,9 @@ export default class Root extends RouterElementMiddleware {
    *
    * @param {string} name Root name
    * @param {RootObject} config Root configuration
+   * @param {ParserConfig} parserConfig Parser configuration
    */
-  constructor(name, config) {
+  constructor(name, config, parserConfig) {
     super(Root, ['name', 'root', 'routes', 'routes'], config)
 
     this.name = String(name)
@@ -24,7 +24,7 @@ export default class Root extends RouterElementMiddleware {
     this.routes = []
 
     this.__parseRoot(config.root)
-    this.__parseRoutes(config.routes)
+    this.__parseRoutes(config.routes, parserConfig)
   }
 
   /**
@@ -43,24 +43,16 @@ export default class Root extends RouterElementMiddleware {
    * Parse root routes
    *
    * @param {[RouteObject]} routes List of routes objects
+   * @param {ParserConfig} parserConfig Parser configuration
    */
-  __parseRoutes(routes) {
+  __parseRoutes(routes, parserConfig) {
     if (routes && !(routes instanceof Object)) {
       throw new InvalidArgument(`${this.name}.routes=${routes} is not an dictionnary.`)
     }
     if (!routes || Object.keys(routes).length === 0) {
       throw new EmptyRoutes()
     }
-    this.routes = Object.keys(routes).map(key => {
-      const el = routes[key]
-      if (el.root) {
-        return new Root(key, el)
-      } else if (el.path) {
-        return new Route(key, routes[key])
-      } else {
-        throw new InvalidRouteElement(`${key} is no recongnized as a Root or as a Route.`)
-      }
-    })
+    this.routes = Parser.__parseRouteElements(routes, parserConfig)
   }
 
   /**

@@ -5,10 +5,13 @@ import yaml from 'js-yaml'
 import { join } from 'path'
 import Express from 'express'
 
+import Import from './models/Import'
 import Root from './models/Root'
+import Route from './models/Route'
 
 import FileNotFound from './errors/FileNotFound'
 import EmptyConfigFile from './errors/EmptyConfigFile'
+import InvalidRouteElement from './errors/InvalidRouteElement'
 
 /** Router configuration parser for express router. */
 export default class Parser {
@@ -64,15 +67,32 @@ export default class Parser {
     this.parseConfig(config)
   }
 
+  static __parseRouteElements(config, parserConfig) {
+    const res = []
+    Object.keys(config).forEach(key => {
+      const el = config[key]
+      if (key === 'import') {
+        res.push(new Import(el, parserConfig))
+      } else {
+        if (el.root) {
+          res.push(new Root(key, el, parserConfig))
+        } else if (el.path) {
+          res.push(new Route(key, el))
+        } else {
+          throw new InvalidRouteElement(`${key} is no recongnized as a Root or as a Route.`)
+        }
+      }
+    })
+    return res
+  }
+
   /**
    * Parse a configuration object
    *
    * @param {{ string: RootObject }} config Configuration object
    */
   parseConfig(config) {
-    this.parsedObjects = Object.keys(config).map(name => {
-      return new Root(name, config[name])
-    })
+    this.parsedObjects = Parser.__parseRouteElements(config, this.config)
   }
 
   /** Load parsed objects and hydrate express router. */
