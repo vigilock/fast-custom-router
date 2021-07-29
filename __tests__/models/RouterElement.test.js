@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals'
-import InvalidArgument from '../../src/errors/InvalidArgument'
-import RouterElement from '../../src/models/RouterElement'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
+import RouterElement from '../../lib/models/RouterElement.js'
 
 describe('check router element configuration', () => {
   test('check undefined configuration', () => {

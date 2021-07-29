@@ -1,0 +1,6 @@
+__tests__
+.githooks
+.github
+.eslintrc.json
+.prettierrc
+jest.config.js

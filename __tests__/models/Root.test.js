@@ -1,9 +1,9 @@
 import { describe, expect, test } from '@jest/globals'
 
-import EmptyRoutes from '../../src/errors/EmptyRoutes'
-import InvalidArgument from '../../src/errors/InvalidArgument'
+import EmptyRoutes from '../../lib/errors/EmptyRoutes.js'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
 
-import Root from '../../src/models/Root'
+import Root from '../../lib/models/Root.js'
 
 describe('check root configuration', () => {
   test('with invalid routes argument', () => {
@@ -84,7 +84,7 @@ describe('check root configuration', () => {
               getUser: {
                 path: '/:id',
                 query: {
-                  id: 'ObjectId',
+                  id: 'number',
                 },
                 methods: {
                   get: {

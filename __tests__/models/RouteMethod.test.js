@@ -1,11 +1,18 @@
-import { describe, expect, test } from '@jest/globals'
+import { describe, expect, test, beforeEach, jest } from '@jest/globals'
 import { routesTeapot } from './__constants__'
-
-import InvalidArgument from '../../src/errors/InvalidArgument'
-
-import RouteMethod from '../../src/models/RouteMethod'
 import { config } from '../__constants__'
-import ControllerNotFound from '../../src/errors/ControllerNotFound'
+
+import FakeRouter from '../mock/FakeRouter.js'
+import getTeapot from '../controller/getTeapot.js'
+
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
+import ModuleNotFound from '../../lib/errors/ModuleNotFound.js'
+
+import RouteMethod from '../../lib/models/RouteMethod.js'
+
+beforeEach(() => {
+  jest.useFakeTimers()
+})
 
 describe('check route method configuration', () => {
   test('check invalid configuration', () => {
@@ -62,31 +69,6 @@ describe('check route method configuration', () => {
     }).not.toThrow()
   })
 
-  test('check wrong controller', async () => {
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: null,
-      })
-    }).toThrow(InvalidArgument)
-    expect(() => {
-      new RouteMethod('GET', {
-        controller: undefined,
-      })
-    }).toThrow(InvalidArgument)
-    const method = new RouteMethod('post', {
-      controller: 'nonexistingController',
-    })
-    await expect(method.loadController(config.controller_dir)).rejects.toThrow(ControllerNotFound)
-  })
-
-  test('check controller import', async () => {
-    const method = new RouteMethod('post', routesTeapot.teapot.methods.get)
-    expect(async () => {
-      await expect(method.loadController(config.controller_dir)).resolves.not.toThrow()
-      expect(method.controller).toBeDefined()
-    }).not.toThrow()
-  })
-
   test('with invalid body', () => {
     expect(() => {
       new RouteMethod('GET', {
@@ -134,5 +116,101 @@ describe('check route method configuration', () => {
         controller: 'getTeapot',
       })
     }).not.toThrow()
+  })
+})
+
+describe('load route with express', () => {
+  const router = new FakeRouter()
+  const path = '/api/user'
+  beforeEach(() => router.init())
+
+  describe('check controller import', () => {
+    test('check wrong controller', async () => {
+      expect(() => {
+        new RouteMethod('GET', {
+          controller: null,
+        })
+      }).toThrow(InvalidArgument)
+      expect(() => {
+        new RouteMethod('GET', {
+          controller: undefined,
+        })
+      }).toThrow(InvalidArgument)
+      const method = new RouteMethod('post', {
+        controller: 'nonexistingController',
+      })
+      jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+      await expect(method.load(router, path, config))
+        .rejects.toThrow(ModuleNotFound)
+        .catch(() => {})
+    })
+
+    test('check controller import', async () => {
+      const method = new RouteMethod('post', routesTeapot.teapot.methods.get)
+      jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+      await method.load(router, path, config)
+      expect(method.controller).toBeDefined()
+    })
+  })
+
+  test('load route without middlewares', async () => {
+    const method = new RouteMethod('GET', {
+      controller: 'getTeapot',
+    })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+    await expect(method.load(router, path, config))
+      .resolves.not.toThrow()
+      .catch(() => {})
+    expect(router.orderedCall).toHaveLength(1)
+    expect(router.routes.get['/api/user']).toBeDefined()
+    expect(router.orderedCall[0].route).toBeDefined()
+  })
+
+  test('load route with pre middleware', async () => {
+    const method = new RouteMethod('GET', {
+      controller: 'getTeapot',
+      pre_middlewares: ['simpleMiddleware'],
+    })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+    await expect(method.load(router, path, config))
+      .resolves.not.toThrow()
+      .catch(() => {})
+    expect(router.orderedCall).toHaveLength(2)
+    expect(router.routes.get['/api/user']).toBeDefined()
+    expect(router.routes.use['/api/user']).toBeDefined()
+    expect(router.orderedCall[0].middleware).toBeDefined()
+    expect(router.orderedCall[1].route).toBeDefined()
+  })
+
+  test('load route with post middleware', async () => {
+    const method = new RouteMethod('GET', {
+      controller: 'getTeapot',
+      post_middlewares: ['simpleMiddleware'],
+    })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+    await expect(method.load(router, path, config)).resolves.not.toThrow()
+    expect(router.orderedCall).toHaveLength(2)
+    expect(router.routes.get['/api/user']).toBeDefined()
+    expect(router.routes.use['/api/user']).toBeDefined()
+    expect(router.orderedCall[0].route).toBeDefined()
+    expect(router.orderedCall[1].middleware).toBeDefined()
+  })
+
+  test('load route with both pre and post middlewares', async () => {
+    const method = new RouteMethod('GET', {
+      controller: 'getTeapot',
+      pre_middlewares: ['simpleMiddleware'],
+      post_middlewares: ['simpleMiddleware'],
+    })
+    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
+    await expect(method.load(router, path, config))
+      .resolves.not.toThrow()
+      .catch(() => {})
+    expect(router.orderedCall).toHaveLength(3)
+    expect(router.routes.get['/api/user']).toBeDefined()
+    expect(router.routes.use['/api/user']).toBeDefined()
+    expect(router.orderedCall[0].middleware).toBeDefined()
+    expect(router.orderedCall[1].route).toBeDefined()
+    expect(router.orderedCall[2].middleware).toBeDefined()
   })
 })

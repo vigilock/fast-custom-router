@@ -1,10 +1,12 @@
-import { describe, expect, test } from '@jest/globals'
+import { describe, expect, test, beforeEach, jest } from '@jest/globals'
 import { config } from '../__constants__'
 
-import MiddlewareNotFound from '../../src/errors/MiddlewareNotFound'
+import FakeRouter from '../mock/FakeRouter.js'
+import SimpleMiddleware from '../middleware/simpleMiddleware.js'
 
-import InvalidArgument from '../../src/errors/InvalidArgument'
-import Middleware from '../../src/models/Middleware'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
+
+import Middleware from '../../lib/models/Middleware.js'
 
 describe('check Middleware configuration', () => {
   test('check invalid name', () => {
@@ -44,23 +46,40 @@ describe('check Middleware configuration', () => {
   })
 })
 
-describe('check Middleware import', () => {
-  test('check wrong middleware', async () => {
-    expect(() => {
-      new Middleware(null)
-    }).toThrow(InvalidArgument)
-    expect(() => {
-      new Middleware(undefined)
-    }).toThrow(InvalidArgument)
-    const middleware = new Middleware('nonexistingController')
-    await expect(middleware.load(config.middleware_dir)).rejects.toThrow(MiddlewareNotFound)
+describe('check middlewares load', () => {
+  const router = new FakeRouter()
+  const path = '/api'
+  beforeEach(() => router.init())
+
+  describe('check Middleware import', () => {
+    test('check wrong middleware', async () => {
+      expect(() => {
+        new Middleware(null)
+      }).toThrow(InvalidArgument)
+      expect(() => {
+        new Middleware(undefined)
+      }).toThrow(InvalidArgument)
+      const middleware = new Middleware('nonexistingController')
+      jest.spyOn(middleware, '__loadModule').mockImplementation(() => {
+        throw new Error()
+      })
+      await expect(middleware.load(router, path, config.middleware_dir)).rejects.toThrow()
+    })
+
+    test('check middleware import', async () => {
+      const middleware = new Middleware('simpleMiddleware')
+      jest.spyOn(middleware, '__loadModule').mockImplementation(() => SimpleMiddleware)
+      await middleware.load(router, path, config.middleware_dir)
+      expect(middleware.middleware).toBeDefined()
+    })
   })
 
-  test('check middleware import', async () => {
+  test('check good declaration', async () => {
     const middleware = new Middleware('simpleMiddleware')
-    expect(async () => {
-      await expect(middleware.load(config.middleware_dir)).resolves.not.toThrow()
-      expect(middleware.middleware).toBeDefined()
-    }).not.toThrow()
+    jest.spyOn(middleware, '__loadModule').mockImplementation(() => SimpleMiddleware)
+    await middleware.load(router, path, config.middleware_dir)
+    expect(router.orderedCall).toHaveLength(1)
+    expect(router.routes.use[path]).toBeDefined()
+    expect(typeof router.routes.use[path]).toBe('function')
   })
 })

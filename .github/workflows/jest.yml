@@ -6,7 +6,7 @@ jobs:
   build:
 
     name: Tests application
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout project

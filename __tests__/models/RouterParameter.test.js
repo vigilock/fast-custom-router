@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals'
-import InvalidArgument from '../../src/errors/InvalidArgument'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
 
-import RouteParameter from '../../src/models/RouteParameter'
+import RouteParameter from '../../lib/models/RouteParameter.js'
 
 const validConfig = { type: 'NUMBER', default_value: 4321 }
 
@@ -105,27 +105,6 @@ describe('check route parameter configuration', () => {
         default_value: 0,
       })
       expect(p.type).toBe(String)
-    }).not.toThrow()
-    expect(() => {
-      const p = new RouteParameter('name', {
-        type: 'boolean',
-        default_value: 0,
-      })
-      expect(p.type).toBe(Boolean)
-    }).not.toThrow()
-    expect(() => {
-      const p = new RouteParameter('name', {
-        type: 'Boolean',
-        default_value: 0,
-      })
-      expect(p.type).toBe(Boolean)
-    }).not.toThrow()
-    expect(() => {
-      const p = new RouteParameter('name', {
-        type: 'BOOLEAN',
-        default_value: 0,
-      })
-      expect(p.type).toBe(Boolean)
     }).not.toThrow()
   })
 

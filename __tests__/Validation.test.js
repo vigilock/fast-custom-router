@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
-import Validation, { validParams } from '../src/Validation'
+import Validation, { validParams } from '../lib/Validation.js'
 
 describe('check parameter casts', () => {
   test('check Number validation', () => {

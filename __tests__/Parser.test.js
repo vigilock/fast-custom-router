@@ -2,13 +2,14 @@ import { describe, expect, test, beforeEach } from '@jest/globals'
 import { YAMLException } from 'js-yaml'
 import { config } from './__constants__'
 
-import Parser from '../src/Parser'
+import Parser from '../lib/Parser.js'
 
-import EmptyConfigFile from '../src/errors/EmptyConfigFile'
-import FileNotFound from '../src/errors/FileNotFound'
-import InvalidArgument from '../src/errors/InvalidArgument'
+import EmptyConfigFile from '../lib/errors/EmptyConfigFile.js'
+import FileNotFound from '../lib/errors/FileNotFound.js'
+import InvalidArgument from '../lib/errors/InvalidArgument.js'
 
-import FakeRouter from './mock/FakeRouter'
+import FakeRouter from './mock/FakeRouter.js'
+import InvalidRouteElement from '../lib/errors/InvalidRouteElement.js'
 
 const fakeExpressRouter = new FakeRouter()
 const parser = new Parser(fakeExpressRouter, config)
@@ -27,22 +28,22 @@ describe('check throwed exceptions on bad files or on creation', () => {
 
   test('on file not found or is directory', () => {
     expect(() => {
-      parser.loadFromFile('wrongFile.yaml')
+      parser.parseFromFile('wrongFile.yaml')
     }).toThrow(FileNotFound)
     expect(() => {
-      parser.loadFromFile('.')
+      parser.parseFromFile('.')
     }).toThrow(FileNotFound)
   })
 
   test('on invalid yaml syntax', () => {
     expect(() => {
-      parser.loadFromFile('__tests__/config/exceptionsBadYAML.yaml')
+      parser.parseFromFile('exceptionsBadYAML.yaml')
     }).toThrow(YAMLException)
   })
 
   test('on empty configuration', () => {
     expect(() => {
-      parser.loadFromString('')
+      parser.parseFromString('')
     }).toThrow(EmptyConfigFile)
   })
 
@@ -58,11 +59,11 @@ describe('check throwed exceptions on bad files or on creation', () => {
       parser.parseConfig({
         my_super_root: null,
       })
-    }).toThrow(InvalidArgument)
+    }).toThrow(InvalidRouteElement)
     expect(() => {
       parser.parseConfig({
         my_super_root: undefined,
       })
-    }).toThrow(InvalidArgument)
+    }).toThrow(InvalidRouteElement)
   })
 })
