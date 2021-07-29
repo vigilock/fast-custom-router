@@ -1,4 +1,22 @@
 /**
+ * @typedef Router Router api
+ * @property {Function} use Use middleware
+ * @property {Function} get Get router method
+ * @property {Function} post Post router method
+ * @property {Function} put Put router method
+ * @property {Function} patch Patch router method
+ * @property {Function} delete Delete router method
+ */
+
+/**
+ * @typedef Request Request api
+ * @property {object} params Request params
+ * @property {object} body Request body
+ */
+
+/** @typedef {Function} RequestHandler Next function api */
+
+/**
  * @typedef Parameter Route parameter
  * @property {Function} type Cast function
  * @property {any} value Value that need to be valided
@@ -11,7 +29,7 @@
  * @property {string} path Route path
  * @property {Function} controller Route controller
  * @property {number} successStatusCode Default status code on success, 200 by default
- * @property {(req: Express.Request) => [Parameter]} getParams List of parameters to be valided
+ * @property {(req: Request) => [Parameter]} getParams List of parameters to be valided
  */
 
 /**

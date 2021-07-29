@@ -4,8 +4,6 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import yaml from 'js-yaml'
 
-import Express from 'express'
-
 import RouterElement from './RouterElement'
 import Parser from '../Parser'
 
@@ -43,7 +41,7 @@ export default class Import extends RouterElement {
   /**
    * Load sub root and routes from name and parser configuration.
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path Middleware path
    * @param {ParserConfig} config Parser configuration
    */

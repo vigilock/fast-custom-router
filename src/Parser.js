@@ -3,7 +3,6 @@ import './__typesdef__'
 import fs from 'fs'
 import yaml from 'js-yaml'
 import { join } from 'path'
-import Express from 'express'
 
 import Import from './models/Import'
 import Root from './models/Root'
@@ -18,7 +17,7 @@ export default class Parser {
   /**
    * Instanciate Parser
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {ParserConfig} [config] Parser configuration
    */
   constructor(router, config = {}) {
@@ -29,9 +28,9 @@ export default class Parser {
     this.config = {
       config_dir: 'config',
       controller_dir: 'controller',
-      middleware_dir: 'controller',
+      middleware_dir: 'middleware',
       http_default_response_code: 200,
-      http_responses_code: [200, 201, 203],
+      http_responses_code: [200, 201, 202, 203, 204, 205, 206],
     }
     /** @type {[Root | Route]} */
     this.parsedObjects = []

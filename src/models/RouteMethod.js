@@ -1,13 +1,10 @@
 import '../__typesdef__'
 import { ACCEPTED_METHODS, HTTP_RESPONSE_CODE, HTTP_DEFAULT_RESPONSE_CODE } from '../__constants__'
 
-import Express from 'express'
-
 import InvalidArgument from '../errors/InvalidArgument'
 
 import RouteParameter from './RouteParameter'
 import RouterElementMiddleware from './RouterElementMiddleware'
-import RouterElement from './RouterElement'
 
 /** Route method of a Route. */
 export default class RouteMethod extends RouterElementMiddleware {
@@ -92,7 +89,7 @@ export default class RouteMethod extends RouterElementMiddleware {
   /**
    * Get valided query parameters.
    *
-   * @param {Express.Request} req Express request
+   * @param {Request} req Express request
    * @returns {{ any }} Query parameters
    */
   __getQuery(req) {
@@ -106,7 +103,7 @@ export default class RouteMethod extends RouterElementMiddleware {
   /**
    * Get valided body parameters.
    *
-   * @param {Express.Request} req Express request
+   * @param {Request} req Express request
    * @returns {{ any }} Body parameters
    */
   __getBody(req) {
@@ -159,7 +156,7 @@ export default class RouteMethod extends RouterElementMiddleware {
   /**
    * Load controller from name and parser configuration.
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path Middleware path
    * @param {ParserConfig} config Parser configuration
    */

@@ -1,5 +1,3 @@
-import Express from 'express'
-
 import InvalidArgument from '../errors/InvalidArgument'
 
 import RouterElement from './RouterElement'
@@ -35,7 +33,7 @@ export default class Middleware extends RouterElement {
   /**
    * Load middleware from name and parser configuration
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path Middleware path
    * @param {string} middlewareDir Controller directory
    */

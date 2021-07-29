@@ -1,5 +1,3 @@
-import Express from 'express'
-
 import Middleware from './Middleware'
 import RouterElement from './RouterElement'
 
@@ -43,7 +41,7 @@ export default class RouterElementMiddleware extends RouterElement {
    * Load middlewares
    *
    * @param {[Middleware]} middlewares List of middlewares
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path URI path
    * @param {string} middlewareDir Middleware directory path
    */
@@ -57,7 +55,7 @@ export default class RouterElementMiddleware extends RouterElement {
   /**
    * Load pre middlewares
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path URI path
    * @param {string} middlewareDir Middleware directory path
    */
@@ -68,7 +66,7 @@ export default class RouterElementMiddleware extends RouterElement {
   /**
    * Load post middlewares
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path URI path
    * @param {string} middlewareDir Middleware directory path
    */

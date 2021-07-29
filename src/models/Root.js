@@ -58,7 +58,7 @@ export default class Root extends RouterElementMiddleware {
   /**
    * Load sub root and routes from name and parser configuration.
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path Middleware path
    * @param {ParserConfig} config Parser configuration
    */

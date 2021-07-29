@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/vigilock/fast-custom-router#readme",
   "dependencies": {
-    "express": "^4.17.1",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {

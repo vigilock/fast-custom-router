@@ -1,7 +1,5 @@
 import { PATH_REGEX } from '../__constants__'
 
-import Express from 'express'
-
 import RouteMethod from './RouteMethod'
 
 import InvalidArgument from '../errors/InvalidArgument'
@@ -82,7 +80,7 @@ export default class Route extends RouterElementMiddleware {
   /**
    * Load routes from name and parser configuration.
    *
-   * @param {Express.Router} router Express router
+   * @param {Router} router Express router
    * @param {string} path Middleware path
    * @param {ParserConfig} config Parser configuration
    */
