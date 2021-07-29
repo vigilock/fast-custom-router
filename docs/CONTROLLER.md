@@ -13,6 +13,12 @@ Controller functions receive only one parameter object wich contains:
 - **query**: list of uri parameters (type checked)
 - **body**: list of body request parameters (type checked)
 
+## Throw exception
+
+You can throw an exception inside a controller.
+
+The exception with be pass to middleware err argument in `next(err, req, res, next)` signature.
+
 ## Example
 
 ```javascript

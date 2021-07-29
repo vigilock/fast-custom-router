@@ -19,7 +19,7 @@ This is a powerful custom enrober for express router.
 
 This is a [Node.js](https://nodejs.org/en/) module available through the [npm registry](https://www.npmjs.com/).
 
-Before installing, [download and install Node.js](https://nodejs.org/en/download/) v14.X.X or higher is required.
+Before installing, [download and install Node.js](https://nodejs.org/en/download/) v14.X.X or higher.
 
 Installation is done using the [npm install command](https://docs.npmjs.com/downloading-and-installing-packages-locally):
 
@@ -56,7 +56,7 @@ api:
         id: number
       methods:
         GET:
-          controller: user/getUser:getUser
+          controller: user/user:getUser
         DELETE:
           controller: user/deleteUser
           pre_middlewares:
@@ -103,22 +103,26 @@ And finnaly create middlewares and controllers
 
 ```javascript
 // middleware/authenticate.js
-
 export default function authenticate(req, res, next) {
   // Doing stuff here
   next()
 }
 
 // [...]
-// controller/getUser.js
 
-export default function getUser({query}) {
+// controller/user.js
+export function getUser({query}) {
   return {
     message: `User #${query.id} has been requested !`
   }
 }
 
-// [...]
+// controller/deleteUser.js
+export default function deleteUser({query}) {
+  return {
+    message: `User #${query.id} has been deleted !`
+  }
+}
 ```
 
 ## Documentation
@@ -137,12 +141,13 @@ The key words are :
 - robust
 - modularity
 - easy-to-use
+- light
 
 It does not depends on any specific router, but we recommand to use with [Express](https://expressjs.com/).
 
 ## Tests
 
-The librairy provide tests, and every commit is checked by using Github Actions : [![Jest - Unit tests](https://github.com/vigilock/fast-custom-router/actions/workflows/jest.yml/badge.svg)](https://github.com/vigilock/fast-custom-router/actions/workflows/jest.yml).
+The library provide tests, and every commit is checked by using Github Actions : [![Jest - Unit tests](https://github.com/vigilock/fast-custom-router/actions/workflows/jest.yml/badge.svg)](https://github.com/vigilock/fast-custom-router/actions/workflows/jest.yml).
 
 If you want to run the tests by yourself, please follow this commands :
 
@@ -155,4 +160,4 @@ npm test
 
 ## License
 
-At [Consignity](https://consignity.fr/) we choosen the [MIT License](./LICENSE) as open-sourced license.
+At [Consignity](https://consignity.fr/) we chosen the [MIT License](./LICENSE) as open-sourced license.

@@ -16,7 +16,7 @@ const config = {
 }
 ```
 
-The config object is usefull to specify configuration, middleware, controller directories. Please specify absolute path, as shown above.
+The config object is useful to specify configuration, middleware, controller directories. Please specify absolute path, as shown above.
 
 ## Parse configuration
 
@@ -36,4 +36,4 @@ The second step to load is just calling `load` method on parser:
 parser.load()
 ```
 
-This methods import dependencies modules (configurations, middlewares and controllers), then load configuration into the app (Express if you use it).
+This methods import dependencies modules (middlewares and controllers), then load configuration into the app (Express if you use it).

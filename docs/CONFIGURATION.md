@@ -2,6 +2,12 @@
 
 First of all, the configuration can be stored in yaml, json, or as javascript object, but in this documentation we use only yaml syntax.
 
+## Type checking
+
+- number
+- string
+- boolean
+
 ## Structures
 
 The following structures are availables :
@@ -23,7 +29,7 @@ post_middlewares:
 
 ### Root
 
-Root represent a root uri that provide `pre_middlewares` and `post_middlewares`.
+Root represent a root uri that provides `pre_middlewares` and `post_middlewares`.
 
 `root` is the _uri_ root, can be defined as `/`, or `/what-ever-you-want`.
 
@@ -52,13 +58,22 @@ api:
 
 ### Route
 
-Root represent a final route uri that provide `pre_middlewares` and `post_middlewares`.
+Route represent a final route uri that provides `pre_middlewares` and `post_middlewares`.
 
-`path` is the _uri_ root, can be defined as `/`, or `/what-ever-you-want`.
+`path` is the _uri_ root, it can be defined as `/`, or `/what-ever-you-want`.
+Also _uri_ parameter can be added as : `/user/:id` with id parameter. But you need to type it as shown below.
 
-`query` provide uri parameters typing.
+`query` provides uri parameters typing.
 
 `methods` is a list of [RouteMethod](#routemethod) configuration.
+
+Methods can only be:
+
+- get
+- post
+- put
+- patch
+- delete
 
 Example :
 
@@ -81,14 +96,14 @@ user:
 
 ### RouteMethod
 
-Root represent a route method that can be called, and it provide `pre_middlewares` and `post_middlewares`.
+RouteMethod represents a route method that can be called, and it provides `pre_middlewares` and `post_middlewares`.
 
 `controller` is the controller path. By default, default export will be loaded, but you can use load named export
 by separating path from named export with `:`.
 
 `response_code` is the default HTTP reponse code, optionnal, 200 by default.
 
-`body` provide request body parameters typing with optionnal default value.
+`body` provides request body parameters typing with optionnal default value.
 
 Example :
 
