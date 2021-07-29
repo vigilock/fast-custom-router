@@ -1,10 +1,10 @@
 import { describe, expect, test } from '@jest/globals'
 import { routesTeapot } from './__constants__'
 
-import InvalidArgument from '../../lib/errors/InvalidArgument'
-import EmptyMethods from '../../lib/errors/EmptyMethods'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
+import EmptyMethods from '../../lib/errors/EmptyMethods.js'
 
-import Route from '../../lib/models/Route'
+import Route from '../../lib/models/Route.js'
 
 describe('check route configuration', () => {
   test('check invalid configuration', () => {

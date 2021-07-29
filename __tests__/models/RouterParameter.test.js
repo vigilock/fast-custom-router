@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals'
-import InvalidArgument from '../../lib/errors/InvalidArgument'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
 
-import RouteParameter from '../../lib/models/RouteParameter'
+import RouteParameter from '../../lib/models/RouteParameter.js'
 
 const validConfig = { type: 'NUMBER', default_value: 4321 }
 

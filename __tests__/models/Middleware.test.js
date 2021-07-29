@@ -1,12 +1,12 @@
 import { describe, expect, test, beforeEach, jest } from '@jest/globals'
 import { config } from '../__constants__'
 
-import FakeRouter from '../mock/FakeRouter'
-import SimpleMiddleware from '../middleware/simpleMiddleware'
+import FakeRouter from '../mock/FakeRouter.js'
+import SimpleMiddleware from '../middleware/simpleMiddleware.js'
 
-import InvalidArgument from '../../lib/errors/InvalidArgument'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
 
-import Middleware from '../../lib/models/Middleware'
+import Middleware from '../../lib/models/Middleware.js'
 
 describe('check Middleware configuration', () => {
   test('check invalid name', () => {

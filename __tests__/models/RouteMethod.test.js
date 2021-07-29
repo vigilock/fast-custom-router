@@ -2,13 +2,13 @@ import { describe, expect, test, beforeEach, jest } from '@jest/globals'
 import { routesTeapot } from './__constants__'
 import { config } from '../__constants__'
 
-import FakeRouter from '../mock/FakeRouter'
-import getTeapot from '../controller/getTeapot'
+import FakeRouter from '../mock/FakeRouter.js'
+import getTeapot from '../controller/getTeapot.js'
 
-import InvalidArgument from '../../lib/errors/InvalidArgument'
-import ModuleNotFound from '../../lib/errors/ModuleNotFound'
+import InvalidArgument from '../../lib/errors/InvalidArgument.js'
+import ModuleNotFound from '../../lib/errors/ModuleNotFound.js'
 
-import RouteMethod from '../../lib/models/RouteMethod'
+import RouteMethod from '../../lib/models/RouteMethod.js'
 
 beforeEach(() => {
   jest.useFakeTimers()
