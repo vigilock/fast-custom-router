@@ -1,9 +1,9 @@
 import { describe, expect, test } from '@jest/globals'
 
-import EmptyRoutes from '../../src/errors/EmptyRoutes'
-import InvalidArgument from '../../src/errors/InvalidArgument'
+import EmptyRoutes from '../../lib/errors/EmptyRoutes'
+import InvalidArgument from '../../lib/errors/InvalidArgument'
 
-import Root from '../../src/models/Root'
+import Root from '../../lib/models/Root'
 
 describe('check root configuration', () => {
   test('with invalid routes argument', () => {

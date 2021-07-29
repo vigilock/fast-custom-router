@@ -5,10 +5,10 @@ import { config } from '../__constants__'
 import FakeRouter from '../mock/FakeRouter'
 import getTeapot from '../controller/getTeapot'
 
-import InvalidArgument from '../../src/errors/InvalidArgument'
-import ModuleNotFound from '../../src/errors/ModuleNotFound'
+import InvalidArgument from '../../lib/errors/InvalidArgument'
+import ModuleNotFound from '../../lib/errors/ModuleNotFound'
 
-import RouteMethod from '../../src/models/RouteMethod'
+import RouteMethod from '../../lib/models/RouteMethod'
 
 beforeEach(() => {
   jest.useFakeTimers()

@@ -2,14 +2,14 @@ import { describe, expect, test, beforeEach } from '@jest/globals'
 import { YAMLException } from 'js-yaml'
 import { config } from './__constants__'
 
-import Parser from '../src/Parser'
+import Parser from '../lib/Parser'
 
-import EmptyConfigFile from '../src/errors/EmptyConfigFile'
-import FileNotFound from '../src/errors/FileNotFound'
-import InvalidArgument from '../src/errors/InvalidArgument'
+import EmptyConfigFile from '../lib/errors/EmptyConfigFile'
+import FileNotFound from '../lib/errors/FileNotFound'
+import InvalidArgument from '../lib/errors/InvalidArgument'
 
 import FakeRouter from './mock/FakeRouter'
-import InvalidRouteElement from '../src/errors/InvalidRouteElement'
+import InvalidRouteElement from '../lib/errors/InvalidRouteElement'
 
 const fakeExpressRouter = new FakeRouter()
 const parser = new Parser(fakeExpressRouter, config)

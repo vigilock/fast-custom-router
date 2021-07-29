@@ -4,9 +4,9 @@ import { config } from '../__constants__'
 import FakeRouter from '../mock/FakeRouter'
 import SimpleMiddleware from '../middleware/simpleMiddleware'
 
-import InvalidArgument from '../../src/errors/InvalidArgument'
+import InvalidArgument from '../../lib/errors/InvalidArgument'
 
-import Middleware from '../../src/models/Middleware'
+import Middleware from '../../lib/models/Middleware'
 
 describe('check Middleware configuration', () => {
   test('check invalid name', () => {

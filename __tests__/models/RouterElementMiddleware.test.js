@@ -4,9 +4,9 @@ import { config } from '../__constants__'
 import FakeRouter from '../mock/FakeRouter'
 import SimpleMiddleware from '../middleware/simpleMiddleware'
 
-import InvalidArgument from '../../src/errors/InvalidArgument'
+import InvalidArgument from '../../lib/errors/InvalidArgument'
 
-import RouterElementMiddleware from '../../src/models/RouterElementMiddleware'
+import RouterElementMiddleware from '../../lib/models/RouterElementMiddleware'
 
 describe('check router element with middlewares', () => {
   test('check valid pre_middlewares', () => {
