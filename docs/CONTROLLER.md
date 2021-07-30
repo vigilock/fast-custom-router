@@ -12,6 +12,7 @@ Controller functions receive only one parameter object wich contains:
 
 - **query**: list of uri parameters (type checked)
 - **body**: list of body request parameters (type checked)
+- **headers**: correspond to req.headers (cf. Express.Resquest)
 
 ## Throw exception
 
@@ -25,7 +26,7 @@ The exception with be pass to middleware err argument in `next(err, req, res, ne
 import db from './database.js'
 import User from './User.js'
 
-export default async function getUsers({ query, body }) {
+export default async function getUsers({ query, body, headers }) {
   const users = await db.queryAll(User)
   return users
 }

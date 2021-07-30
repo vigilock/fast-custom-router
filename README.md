@@ -1,4 +1,4 @@
-[![npm version](https://img.shields.io/npm/v/fast-custom-router)](https://www.npmjs.com/package/fast-custom-router)
+[![release version](https://img.shields.io/github/v/release/vigilock/fast-custom-router.svg)](https://www.npmjs.com/package/fast-custom-router)
 ![downloads](https://img.shields.io/npm/dm/fast-custom-router)
 [![Jest - Unit tests](https://github.com/vigilock/fast-custom-router/actions/workflows/jest.yml/badge.svg)](https://github.com/vigilock/fast-custom-router/actions/workflows/jest.yml)
 [![Node.js Package](https://github.com/vigilock/fast-custom-router/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/vigilock/fast-custom-router/actions/workflows/npm-publish.yml)
