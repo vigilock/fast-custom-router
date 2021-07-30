@@ -26,6 +26,7 @@
     "test": "NODE_OPTIONS='--experimental-vm-modules  --no-warnings' npx jest --verbose"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
