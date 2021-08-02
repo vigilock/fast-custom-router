@@ -14,6 +14,7 @@ Controller functions receive only one parameter object wich contains:
 - **params**: list of uri parameters (type checked)
 - **body**: list of body request parameters (type checked)
 - **headers**: correspond to req.headers (cf. Express.Resquest, type not checked)
+- others custom arguments (cf. [Middleware#CustomArgs](./MIDDLEWARE.md#pass-custom-arguments-to-controllers))
 
 ## Throw exception
 
