@@ -10,9 +10,10 @@ Controller can return objects or none return.
 
 Controller functions receive only one parameter object wich contains:
 
-- **query**: list of uri parameters (type checked)
+- **query**: list of uri query (type not checked)
+- **params**: list of uri parameters (type checked)
 - **body**: list of body request parameters (type checked)
-- **headers**: correspond to req.headers (cf. Express.Resquest)
+- **headers**: correspond to req.headers (cf. Express.Resquest, type not checked)
 
 ## Throw exception
 
@@ -26,7 +27,7 @@ The exception with be pass to middleware err argument in `next(err, req, res, ne
 import db from './database.js'
 import User from './User.js'
 
-export default async function getUsers({ query, body, headers }) {
+export default async function getUsers({ query, params, body, headers }) {
   const users = await db.queryAll(User)
   return users
 }

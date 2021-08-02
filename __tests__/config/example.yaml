@@ -21,10 +21,10 @@ api:
             age:
               type: number
           post_middlewares:
-           - logRequests
+            - logRequests
     user:
       path: /user/:id
-      query:
+      params:
         id: Number
       methods:
         GET:

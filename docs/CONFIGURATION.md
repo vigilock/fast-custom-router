@@ -67,7 +67,7 @@ Route represent a final route uri that provides `pre_middlewares` and `post_midd
 `path` is the _uri_ root, it can be defined as `/`, or `/what-ever-you-want`.
 Also _uri_ parameter can be added as : `/user/:id` with id parameter. But you need to type it as shown below.
 
-`query` provides uri parameters typing.
+`params` provides uri parameters typing.
 
 `methods` is a list of [RouteMethod](#routemethod) configuration.
 
@@ -84,7 +84,7 @@ Example :
 ```yaml
 user:
   path: /user/:id
-  query:
+  params:
     id: number
   pre_middlewares:
     - checkUserPermissions
@@ -171,7 +171,7 @@ static:
 # usersRoute.yaml
 user:
   path: /user/:id
-  query:
+  params:
     id: number
   methods:
     GET:

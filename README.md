@@ -52,7 +52,7 @@ api:
   routes:
     user:
       path: /user/:id
-      query:
+      params:
         id: number
       methods:
         GET:
@@ -111,16 +111,16 @@ export default function authenticate(req, res, next) {
 // [...]
 
 // controller/user.js
-export function getUser({query}) {
+export function getUser({params}) {
   return {
-    message: `User #${query.id} has been requested !`
+    message: `User #${params.id} has been requested !`
   }
 }
 
 // controller/deleteUser.js
-export default function deleteUser({query}) {
+export default function deleteUser({params}) {
   return {
-    message: `User #${query.id} has been deleted !`
+    message: `User #${params.id} has been deleted !`
   }
 }
 ```

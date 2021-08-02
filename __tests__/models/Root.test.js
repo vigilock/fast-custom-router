@@ -83,7 +83,7 @@ describe('check root configuration', () => {
             routes: {
               getUser: {
                 path: '/:id',
-                query: {
+                params: {
                   id: 'number',
                 },
                 methods: {
