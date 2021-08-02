@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals'
 import InvalidArgument from '../../lib/errors/InvalidArgument.js'
 
 import RouteParameter from '../../lib/models/RouteParameter.js'
+import Validation from '../../lib/Validation.js'
 
 const validConfig = { type: 'NUMBER', default_value: 4321 }
 
@@ -25,7 +26,7 @@ describe('check route parameter configuration', () => {
     expect(() => {
       const p = new RouteParameter('valid_name', validConfig)
       expect(p.name).toEqual('valid_name')
-      expect(p.type).toEqual(Number)
+      expect(p.type).toEqual(Validation.NUMBER)
       expect(p.default_value).toEqual(validConfig.default_value)
     }).not.toThrow()
   })
@@ -72,21 +73,21 @@ describe('check route parameter configuration', () => {
         type: 'Number',
         default_value: 0,
       })
-      expect(p.type).toBe(Number)
+      expect(p.type).toBe(Validation.NUMBER)
     }).not.toThrow()
     expect(() => {
       const p = new RouteParameter('name', {
         type: 'number',
         default_value: 0,
       })
-      expect(p.type).toBe(Number)
+      expect(p.type).toBe(Validation.NUMBER)
     }).not.toThrow()
     expect(() => {
       const p = new RouteParameter('name', {
         type: 'NUMBER',
         default_value: 0,
       })
-      expect(p.type).toBe(Number)
+      expect(p.type).toBe(Validation.NUMBER)
     }).not.toThrow()
     expect(() => {
       const p = new RouteParameter('name', {

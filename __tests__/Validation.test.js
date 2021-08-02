@@ -8,7 +8,9 @@ describe('check parameter casts', () => {
     expect(Validation.NUMBER(5)).toEqual(5)
     expect(Validation.NUMBER(12345)).toEqual(12345)
     expect(Validation.NUMBER('123')).toEqual(123)
-    expect(Validation.NUMBER('qsdf')).toEqual(NaN)
+    expect(() => {
+      Validation.NUMBER('qsdf')
+    }).toThrow()
     expect(Validation.NUMBER(true)).toEqual(1)
     expect(Validation.NUMBER(false)).toEqual(0)
   })
