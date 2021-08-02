@@ -12,10 +12,14 @@ First of all, the configuration can be stored in yaml, json, or as javascript ob
 
 The following structures are availables :
 
-- [Root](#root)
-- [Route](#route)
-- [RouteMethod](#routemethod)
-- [Import](#import)
+- [Configuration](#configuration)
+  - [Type checking](#type-checking)
+  - [Structures](#structures)
+    - [Root](#root)
+    - [Route](#route)
+    - [RouteMethod](#routemethod)
+    - [Import](#import)
+  - [Example](#example)
 
 When mentionned `pre_middlewares` and `post_middlewares`, it refers to middlewares that are executed before and afters routes.
 They are optionnal, and contains name of middlewares:
@@ -121,6 +125,8 @@ POST:
       type: string
     password:
       type: string
+    email: mail # Using shortcut
+    stayConnected: boolean
     age:
       type: number
       default_value: 20

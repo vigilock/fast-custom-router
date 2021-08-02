@@ -61,6 +61,9 @@ describe('check route parameter configuration', () => {
     expect(() => {
       new RouteParameter('name', { type: 'invalid' })
     }).toThrow(InvalidArgument)
+    expect(() => {
+      new RouteParameter('name', 'invalid')
+    }).toThrow(InvalidArgument)
   })
 
   test('check valid type', () => {
@@ -88,22 +91,34 @@ describe('check route parameter configuration', () => {
     expect(() => {
       const p = new RouteParameter('name', {
         type: 'string',
-        default_value: 0,
+        default_value: 'default',
       })
       expect(p.type).toBe(String)
     }).not.toThrow()
     expect(() => {
       const p = new RouteParameter('name', {
         type: 'String',
-        default_value: 0,
+        default_value: 'fdefault',
       })
       expect(p.type).toBe(String)
     }).not.toThrow()
     expect(() => {
       const p = new RouteParameter('name', {
         type: 'STRING',
-        default_value: 0,
+        default_value: 'default',
       })
+      expect(p.type).toBe(String)
+    }).not.toThrow()
+    expect(() => {
+      const p = new RouteParameter('name', 'string')
+      expect(p.type).toBe(String)
+    }).not.toThrow()
+    expect(() => {
+      const p = new RouteParameter('name', 'String')
+      expect(p.type).toBe(String)
+    }).not.toThrow()
+    expect(() => {
+      const p = new RouteParameter('name', 'STRING')
       expect(p.type).toBe(String)
     }).not.toThrow()
   })
