@@ -116,6 +116,9 @@ Example :
 GET:
   controller: getUsers
 
+# stay very simple
+GET: getUsers
+
 # or with more complex route method
 POST:
   controller: subDir/controllerUsers:postUser
