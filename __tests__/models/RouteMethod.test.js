@@ -153,7 +153,7 @@ describe('load route with express', () => {
     })
   })
 
-  test('load route without middlewares', async () => {
+  test('load route', async () => {
     const method = new RouteMethod('GET', {
       controller: 'getTeapot',
     })
@@ -164,53 +164,5 @@ describe('load route with express', () => {
     expect(router.orderedCall).toHaveLength(1)
     expect(router.routes.get['/api/user']).toBeDefined()
     expect(router.orderedCall[0].route).toBeDefined()
-  })
-
-  test('load route with pre middleware', async () => {
-    const method = new RouteMethod('GET', {
-      controller: 'getTeapot',
-      pre_middlewares: ['simpleMiddleware'],
-    })
-    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
-    await expect(method.load(router, path, config))
-      .resolves.not.toThrow()
-      .catch(() => {})
-    expect(router.orderedCall).toHaveLength(2)
-    expect(router.routes.get['/api/user']).toBeDefined()
-    expect(router.routes.use['/api/user']).toBeDefined()
-    expect(router.orderedCall[0].middleware).toBeDefined()
-    expect(router.orderedCall[1].route).toBeDefined()
-  })
-
-  test('load route with post middleware', async () => {
-    const method = new RouteMethod('GET', {
-      controller: 'getTeapot',
-      post_middlewares: ['simpleMiddleware'],
-    })
-    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
-    await expect(method.load(router, path, config)).resolves.not.toThrow()
-    expect(router.orderedCall).toHaveLength(2)
-    expect(router.routes.get['/api/user']).toBeDefined()
-    expect(router.routes.use['/api/user']).toBeDefined()
-    expect(router.orderedCall[0].route).toBeDefined()
-    expect(router.orderedCall[1].middleware).toBeDefined()
-  })
-
-  test('load route with both pre and post middlewares', async () => {
-    const method = new RouteMethod('GET', {
-      controller: 'getTeapot',
-      pre_middlewares: ['simpleMiddleware'],
-      post_middlewares: ['simpleMiddleware'],
-    })
-    jest.spyOn(method, '__loadModule').mockImplementation(() => getTeapot)
-    await expect(method.load(router, path, config))
-      .resolves.not.toThrow()
-      .catch(() => {})
-    expect(router.orderedCall).toHaveLength(3)
-    expect(router.routes.get['/api/user']).toBeDefined()
-    expect(router.routes.use['/api/user']).toBeDefined()
-    expect(router.orderedCall[0].middleware).toBeDefined()
-    expect(router.orderedCall[1].route).toBeDefined()
-    expect(router.orderedCall[2].middleware).toBeDefined()
   })
 })
