@@ -133,8 +133,6 @@ POST:
     age:
       type: number
       default_value: 20
-  post_middlewares:
-    - logRequests
 ```
 
 ### Import
