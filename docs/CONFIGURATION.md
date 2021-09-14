@@ -18,6 +18,7 @@ The following structures are availables :
     - [Root](#root)
     - [Route](#route)
     - [RouteMethod](#routemethod)
+      - [Disable abstraction](#disable-abstraction)
     - [Import](#import)
   - [Example](#example)
 
@@ -133,6 +134,30 @@ POST:
     age:
       type: number
       default_value: 20
+```
+
+#### Disable abstraction
+
+By default each controller is decorated by the library.
+
+There is many advantages:
+
+- Write unit tests is easier
+- Controllers are less requests dependent
+- All parameters are type checked (body, query, and params)
+- Can define default response code
+- Can throw execptions in controllers
+- ...
+
+But in some cases you can't use your code with this decorator,
+for example with [Passport.js](https://www.passportjs.org/),
+and you have to disable the abtraction:
+
+```yaml
+# Decorator will be disabled
+GET:
+  controller: myPassportController
+  abstract: false
 ```
 
 ### Import
