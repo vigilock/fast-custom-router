@@ -108,7 +108,7 @@ by separating path from named export with `:`.
 
 `response_code` is the default HTTP reponse code, optionnal, 200 by default.
 
-`body` provides request body parameters typing with optionnal default value.
+`body` provides request body parameters typing with optionnal default value (can be setted to `null` or `undefined`).
 
 Example :
 
@@ -134,6 +134,11 @@ POST:
     age:
       type: number
       default_value: 20
+    weight:
+      type: number
+      default_value: undefined
+      # OR
+      default_value: null
 ```
 
 #### Disable abstraction
