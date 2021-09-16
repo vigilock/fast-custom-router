@@ -44,6 +44,7 @@ jobs:
         with:
           node-version: 16.5.0
           registry-url: https://registry.npmjs.org/
+          scope: '@consignity'
       - run: npm ci
       - run: npm publish
         env:
