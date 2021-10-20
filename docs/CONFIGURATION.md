@@ -74,6 +74,7 @@ Also _uri_ parameter can be added as : `/user/:id` with id parameter. But you ne
 
 Methods can only be:
 
+- all
 - get
 - post
 - put
