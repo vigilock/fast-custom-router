@@ -1,5 +1,5 @@
 import { describe, expect, test, beforeEach, jest } from '@jest/globals'
-import { config } from '../__constants__'
+import { config } from '../__constants__.js'
 
 import FakeRouter from '../mock/FakeRouter.js'
 import SimpleMiddleware from '../middleware/simpleMiddleware.js'
