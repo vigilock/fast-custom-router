@@ -30,13 +30,13 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^24.4.0",
-    "eslint-plugin-jsdoc": "^36.0.2",
-    "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^27.0.6",
-    "nodemon": "^2.0.12",
-    "prettier": "^2.3.2",
-    "prettier-plugin-jsdoc": "^0.3.23"
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^26.1.2",
+    "eslint-plugin-jsdoc": "^38.0.6",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.0",
+    "prettier-plugin-jsdoc": "^0.3.31"
   }
 }
