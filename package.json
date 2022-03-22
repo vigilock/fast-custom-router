@@ -23,7 +23,8 @@
   },
   "scripts": {
     "dev": "NODE_OPTIONS='--experimental-vm-modules --no-warnings' npx jest --watch",
-    "test": "NODE_OPTIONS='--experimental-vm-modules  --no-warnings' npx jest --verbose"
+    "test": "NODE_OPTIONS='--experimental-vm-modules  --no-warnings' npx jest --verbose",
+    "types": "npx tsc lib/**/*.js --declaration --allowJs --emitDeclarationOnly --outFile main.d.ts"
   },
   "dependencies": {
     "colors": "^1.4.0",
