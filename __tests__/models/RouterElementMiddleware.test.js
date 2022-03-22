@@ -10,7 +10,7 @@ import RouterElementMiddleware from '../../lib/models/RouterElementMiddleware.js
 
 describe('check router element with middlewares', () => {
   test('check valid pre_middlewares', () => {
-    const el = new RouterElementMiddleware(Object, [], {
+    const el = new RouterElementMiddleware(Object.name, {
       pre_middlewares: ['simpleMiddleware'],
     })
     expect(el.pre_middlewares).toHaveLength(1)
@@ -19,24 +19,24 @@ describe('check router element with middlewares', () => {
 
   test('check invalid pre_middlewares', () => {
     expect(() => {
-      new RouterElementMiddleware(Object, [], {
+      new RouterElementMiddleware(Object.name, {
         pre_middlewares: ['firstMiddleware', 5, 'secondMiddleware', true, false],
       })
     }).toThrow(InvalidArgument)
     expect(() => {
-      new RouterElementMiddleware(Object, [], {
+      new RouterElementMiddleware(Object.name, {
         pre_middlewares: null,
       })
     }).not.toThrow()
     expect(() => {
-      new RouterElementMiddleware(Object, [], {
+      new RouterElementMiddleware(Object.name, {
         pre_middlewares: undefined,
       })
     }).not.toThrow()
   })
 
   test('check valid post_middlewares', () => {
-    const el = new RouterElementMiddleware(Object, [], {
+    const el = new RouterElementMiddleware(Object.name, {
       pre_middlewares: ['simpleMiddleware'],
     })
     expect(el.pre_middlewares).toHaveLength(1)
@@ -45,17 +45,17 @@ describe('check router element with middlewares', () => {
 
   test('check invalid post_middlewares', () => {
     expect(() => {
-      new RouterElementMiddleware(Object, [], {
+      new RouterElementMiddleware(Object.name, {
         post_middlewares: ['firstMiddleware', 5, 'secondMiddleware', true, false],
       })
     }).toThrow(InvalidArgument)
     expect(() => {
-      new RouterElementMiddleware(Object, [], {
+      new RouterElementMiddleware(Object.name, {
         post_middlewares: null,
       })
     }).not.toThrow()
     expect(() => {
-      new RouterElementMiddleware(Object, [], {
+      new RouterElementMiddleware(Object.name, {
         post_middlewares: undefined,
       })
     }).not.toThrow()
@@ -67,14 +67,14 @@ describe('load middlewares', () => {
   beforeEach(() => router.init())
 
   test('load empty middlewares lists', async () => {
-    const el = new RouterElementMiddleware(Object, [], {})
+    const el = new RouterElementMiddleware(Object.name, {})
     jest.spyOn(el, '__loadModule').mockImplementation(() => SimpleMiddleware)
     await el.__loadPreMiddlewares(router, '/', config.middleware_dir)
     await el.__loadPostMiddlewares(router, '/', config.middleware_dir)
   })
 
   test('load pre_middlewares', async () => {
-    const el = new RouterElementMiddleware(Object, [], {
+    const el = new RouterElementMiddleware(Object.name, {
       pre_middlewares: ['simpleMiddleware'],
     })
     jest.spyOn(el.pre_middlewares[0], '__loadModule').mockImplementation(() => SimpleMiddleware)
@@ -83,7 +83,7 @@ describe('load middlewares', () => {
   })
 
   test('load post_middlewares', async () => {
-    const el = new RouterElementMiddleware(Object, [], {
+    const el = new RouterElementMiddleware(Object.name, {
       post_middlewares: ['simpleMiddleware'],
     })
     jest.spyOn(el.post_middlewares[0], '__loadModule').mockImplementation(() => SimpleMiddleware)
@@ -92,7 +92,7 @@ describe('load middlewares', () => {
   })
 
   test('load all middlewares', async () => {
-    const el = new RouterElementMiddleware(Object, [], {
+    const el = new RouterElementMiddleware(Object.name, {
       pre_middlewares: ['simpleMiddleware'],
       post_middlewares: ['simpleMiddleware'],
     })

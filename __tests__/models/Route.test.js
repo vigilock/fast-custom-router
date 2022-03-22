@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
-import { routesTeapot } from './__constants__'
+import { routesTeapot } from './__constants__.js'
 
 import InvalidArgument from '../../lib/errors/InvalidArgument.js'
 import EmptyMethods from '../../lib/errors/EmptyMethods.js'
