@@ -57,6 +57,7 @@ api:
       methods:
         GET:
           controller: user/user:getUser
+          status: 200
         DELETE:
           controller: user/deleteUser
           pre_middlewares:
